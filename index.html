@@ -2,37 +2,55 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>محفظتي الذكية | إدارة الأموال والمصاريف</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>محفظتي الذكية | Smart Wallet Pro</title>
   
-  <!-- الخطوط والأيقونات والمكتبات -->
+  <!-- Manifest & Theme for PWA -->
+  <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Smart%20Wallet%22,%22short_name%22:%22Wallet%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22#0b132b%22,%22theme_color%22:%22#10b981%22}">
+  <meta name="theme-color" content="#10b981">
+
+  <!-- Icons, Fonts & Chart.js -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     :root {
       --bg: #0b132b;
-      --bg-card: rgba(28, 37, 65, 0.65);
-      --border-line: rgba(255, 255, 255, 0.1);
+      --bg-card: rgba(28, 37, 65, 0.7);
+      --border-line: rgba(255, 255, 255, 0.12);
       --primary: #10b981;
       --danger: #ef4444;
       --accent: #3b82f6;
       --text: #f8fafc;
       --text-muted: #94a3b8;
+      --input-bg: rgba(11, 19, 43, 0.6);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+    [data-theme="light"] {
+      --bg: #f1f5f9;
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --border-line: rgba(0, 0, 0, 0.08);
+      --primary: #059669;
+      --danger: #dc2626;
+      --accent: #2563eb;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --input-bg: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', 'Inter', sans-serif; transition: background 0.3s, color 0.3s; }
     body {
-      background: radial-gradient(circle at top right, #1c2541, #0b132b);
+      background: var(--bg);
       color: var(--text);
       min-height: 100vh;
       padding-bottom: 40px;
+      overflow-x: hidden;
     }
 
-    .container { width: min(1000px, 92%); margin: auto; padding-top: 25px; }
+    .container { width: min(1150px, 94%); margin: auto; padding-top: 15px; }
 
     .glass {
       background: var(--bg-card);
@@ -40,95 +58,124 @@
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-line);
       border-radius: 20px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
     }
 
     /* Auth Screen */
     .auth-container {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      min-height: 70vh; text-align: center; padding: 30px;
+      min-height: 85vh; text-align: center; padding: 20px;
     }
-    .auth-card { padding: 40px; max-width: 420px; width: 100%; }
-    .auth-card i.logo-icon { font-size: 3rem; color: var(--primary); margin-bottom: 15px; }
+    .auth-card { padding: 40px 25px; max-width: 440px; width: 100%; }
+    .auth-card i.logo-icon { font-size: 3.5rem; color: var(--primary); margin-bottom: 15px; }
     .auth-card h2 { margin-bottom: 10px; font-weight: 800; }
-    .auth-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px; }
+    .auth-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px; line-height: 1.6; }
+    
+    .btn-group-auth { display: flex; flex-direction: column; gap: 12px; width: 100%; }
     .google-btn {
-      display: flex; align-items: center; justify-content: center; gap: 12px;
-      width: 100%; padding: 12px; border-radius: 12px; border: none;
-      background: #ffffff; color: #333; font-weight: 700; cursor: pointer; transition: 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 13px; border-radius: 12px; border: none;
+      background: #ffffff; color: #333; font-weight: 700; cursor: pointer; font-size: 0.95rem;
     }
-    .google-btn:hover { background: #f1f1f1; transform: translateY(-2px); }
+    .guest-btn {
+      width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-line);
+      background: transparent; color: var(--text); font-weight: 600; cursor: pointer; font-size: 0.9rem;
+    }
 
-    /* Header & User Profile */
+    /* Header & Controls */
     header {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 15px 20px; border-radius: 16px; margin-bottom: 25px;
+      padding: 15px 20px; border-radius: 16px; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
     }
-    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.3rem; color: var(--primary); }
-    .user-profile { display: flex; align-items: center; gap: 12px; }
-    .user-avatar { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--primary); }
-    .logout-btn { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 1rem; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.25rem; color: var(--primary); }
+    .top-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    
+    .control-btn, select.control-btn {
+      background: var(--input-bg); color: var(--text); border: 1px solid var(--border-line);
+      padding: 7px 12px; border-radius: 10px; font-size: 0.82rem; cursor: pointer; outline: none;
+      display: inline-flex; align-items: center; gap: 5px; font-weight: 600;
+    }
+
+    .user-avatar { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--primary); }
 
     /* Cards Grid */
-    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 25px; }
-    .card { padding: 20px; text-align: center; }
-    .card h4 { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 8px; }
-    .card .amount { font-size: 1.8rem; font-weight: 700; }
+    .dashboard-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+      gap: 15px; 
+      margin-bottom: 20px; 
+    }
+    .card { padding: 18px; text-align: center; }
+    .card h4 { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 6px; }
+    .card .amount { font-size: 1.5rem; font-weight: 800; word-break: break-word; }
     .card.income .amount { color: var(--primary); }
     .card.expense .amount { color: var(--danger); }
     .card.savings .amount { color: var(--accent); }
 
-    /* Budget Progress Bar */
-    .budget-section { padding: 20px; margin-bottom: 25px; }
-    .budget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .progress-bar { width: 100%; height: 12px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
-    .progress-fill { height: 100%; background: var(--primary); transition: width 0.4s ease, background 0.4s ease; border-radius: 10px; }
+    /* Savings Goal & Budget Section */
+    .goals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+    @media (max-width: 768px) { .goals-grid { grid-template-columns: 1fr; } }
+
+    .budget-section, .savings-goal-box { padding: 18px; }
+    .budget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.88rem; }
+    .progress-bar { width: 100%; height: 10px; background: var(--border-line); border-radius: 10px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--primary); transition: width 0.4s ease; border-radius: 10px; }
 
     /* Form & Chart Grid */
-    .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
-    @media (max-width: 768px) { .main-grid { grid-template-columns: 1fr; } }
+    .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    @media (max-width: 850px) { .main-grid { grid-template-columns: 1fr; } }
 
-    .form-box, .chart-box { padding: 22px; }
-    .form-box h3, .chart-box h3 { margin-bottom: 18px; font-size: 1.1rem; }
+    .form-box, .chart-box { padding: 20px; }
+    .form-box h3, .chart-box h3 { margin-bottom: 16px; font-size: 1rem; display: flex; align-items: center; gap: 8px; }
 
-    .input-group { margin-bottom: 14px; }
-    .input-group label { display: block; font-size: 0.85rem; margin-bottom: 6px; color: var(--text-muted); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+
+    .input-group { margin-bottom: 12px; }
+    .input-group label { display: block; font-size: 0.8rem; margin-bottom: 5px; color: var(--text-muted); }
     input, select {
-      width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-line);
-      background: rgba(11, 19, 43, 0.6); color: var(--text); outline: none; font-size: 0.95rem;
+      width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border-line);
+      background: var(--input-bg); color: var(--text); outline: none; font-size: 0.88rem;
     }
     input:focus, select:focus { border-color: var(--primary); }
 
-    .btn {
-      width: 100%; padding: 12px; border-radius: 12px; border: none; font-weight: 700;
-      background: var(--primary); color: #0b132b; cursor: pointer; transition: 0.2s;
-    }
-    .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+    .checkbox-group { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 0.85rem; }
 
-    /* Transactions List */
-    .transactions-box { padding: 22px; }
-    .transactions-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .tx-list { list-style: none; max-height: 300px; overflow-y: auto; }
+    .btn {
+      width: 100%; padding: 11px; border-radius: 10px; border: none; font-weight: 700;
+      background: var(--primary); color: #ffffff; cursor: pointer; font-size: 0.9rem;
+    }
+    .btn:hover { opacity: 0.9; }
+
+    /* Transactions & Search Header */
+    .transactions-box { padding: 20px; }
+    .tx-header-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
+    .search-input { max-width: 250px; }
+
+    .tx-list { list-style: none; max-height: 350px; overflow-y: auto; }
     .tx-item {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 15px; border-bottom: 1px solid var(--border-line);
+      padding: 12px 10px; border-bottom: 1px solid var(--border-line); gap: 10px;
     }
     .tx-item:last-child { border-bottom: none; }
-    .tx-info { display: flex; align-items: center; gap: 12px; }
+    .tx-info { display: flex; align-items: center; gap: 10px; overflow: hidden; }
     .tx-icon {
-      width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center;
-      background: rgba(255,255,255,0.05); font-size: 1.1rem;
+      width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center;
+      background: var(--border-line); font-size: 0.95rem; flex-shrink: 0;
     }
-    .tx-amount { font-weight: 700; }
+    .tx-details strong { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.88rem; }
+    .tx-amount { font-weight: 700; font-size: 0.92rem; white-space: nowrap; }
     .tx-amount.plus { color: var(--primary); }
     .tx-amount.minus { color: var(--danger); }
-    .delete-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; margin-right: 10px; }
+    .delete-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px; }
     .delete-btn:hover { color: var(--danger); }
 
     .alert {
-      display: none; padding: 12px 18px; border-radius: 12px; margin-bottom: 20px;
-      background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: #fca5a5;
+      display: none; padding: 12px 16px; border-radius: 12px; margin-bottom: 15px;
+      background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: #fca5a5; font-size: 0.85rem;
     }
+
+    .chart-container { position: relative; height: 250px; width: 100%; display: flex; justify-content: center; }
   </style>
 </head>
 <body>
@@ -137,61 +184,95 @@
   <div id="authScreen" class="auth-container">
     <div class="auth-card glass">
       <i class="fa-solid fa-wallet logo-icon"></i>
-      <h2>محفظتي الذكية</h2>
-      <p>قم بتسجيل الدخول بواسطة جوجل لحفظ بياناتك ومصروفاتك بأمان على السحاب.</p>
-      <button class="google-btn" id="loginBtn">
-        <i class="fa-brands fa-google" style="color:#ea4335;"></i> تسجيل الدخول بحساب Google
-      </button>
+      <h2 id="txtAuthTitle">محفظتي الذكية</h2>
+      <p id="txtAuthDesc">تطبيق الإدارة المالية الشامل لجميع العملات مع المزامنة التلقائية والعمل بدون إنترنت.</p>
+      
+      <div class="btn-group-auth">
+        <button class="google-btn" id="loginBtn">
+          <i class="fa-brands fa-google" style="color:#ea4335;"></i> <span id="txtGoogleLogin">تسجيل الدخول بحساب Google</span>
+        </button>
+        <button class="guest-btn" id="guestBtn">
+          <i class="fa-solid fa-user-clock"></i> <span id="txtGuestLogin">متابعة كزائر (تخزين محلي)</span>
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- App Dashboard Screen (Hidden by default) -->
+  <!-- App Dashboard Screen -->
   <div id="appScreen" class="container" style="display: none;">
     <!-- Header -->
     <header class="glass">
       <div class="brand">
         <i class="fa-solid fa-wallet"></i>
-        <span>محفظتي الذكية</span>
+        <span id="txtAppTitle">محفظتي الذكية</span>
       </div>
-      <div class="user-profile">
-        <img id="userImg" class="user-avatar" src="" alt="User">
-        <span id="userName" style="font-size:0.9rem; font-weight:600;"></span>
-        <button class="btn" onclick="setBudget()" style="padding: 6px 12px; width: auto; font-size: 0.8rem; margin-right: 8px;">
-          <i class="fa-solid fa-gear"></i> الميزانية
-        </button>
-        <button class="logout-btn" id="logoutBtn" title="تسجيل الخروج"><i class="fa-solid fa-right-from-bracket"></i></button>
+      <div class="top-controls">
+        <!-- Language Switch -->
+        <button class="control-btn" id="langToggleBtn"><i class="fa-solid fa-globe"></i> <span id="langText">EN</span></button>
+        
+        <!-- Theme Switch -->
+        <button class="control-btn" id="themeToggleBtn"><i class="fa-solid fa-moon"></i></button>
+
+        <!-- Currency Selector -->
+        <select id="currencySelect" class="control-btn" title="العملة">
+          <option value="USD">USD ($)</option>
+          <option value="YER">YER (ريال يمني)</option>
+          <option value="SAR">SAR (ريال سعودي)</option>
+          <option value="AED">AED (درهم إماراتي)</option>
+          <option value="OMR">OMR (ريال عماني)</option>
+        </select>
+
+        <!-- User Profile / Logout -->
+        <div id="userProfile" style="display: flex; align-items: center; gap: 8px;">
+          <img id="userImg" class="user-avatar" src="" alt="User" style="display:none;">
+          <button class="control-btn" id="logoutBtn" style="color:var(--danger);"><i class="fa-solid fa-right-from-bracket"></i></button>
+        </div>
       </div>
     </header>
 
     <!-- Alert Banner -->
     <div class="alert" id="budgetAlert">
-      <i class="fa-solid fa-triangle-exclamation"></i> <strong>تنبيه:</strong> لقد اقتربت من استهلاك الميزانية الشهرية كاملة أو تجاوزتها!
+      <i class="fa-solid fa-triangle-exclamation"></i> <span id="txtBudgetAlert">تنبيه: لقد تجاوزت أو اقتربت جداً من حد الميزانية الشهرية!</span>
     </div>
 
     <!-- Dashboard Cards -->
     <div class="dashboard-grid">
       <div class="card glass income">
-        <h4>إجمالي الدخل</h4>
-        <div class="amount" id="incomeVal">$0</div>
+        <h4 id="txtIncomeLabel">إجمالي الدخل</h4>
+        <div class="amount" id="incomeVal">0</div>
       </div>
       <div class="card glass expense">
-        <h4>إجمالي المصاريف</h4>
-        <div class="amount" id="expenseVal">$0</div>
+        <h4 id="txtExpenseLabel">إجمالي المصاريف</h4>
+        <div class="amount" id="expenseVal">0</div>
       </div>
       <div class="card glass savings">
-        <h4>المتبقي / المدخرات</h4>
-        <div class="amount" id="savingsVal">$0</div>
+        <h4 id="txtSavingsLabel">المتبقي / المدخرات</h4>
+        <div class="amount" id="savingsVal">0</div>
       </div>
     </div>
 
-    <!-- Budget Progress -->
-    <div class="budget-section glass">
-      <div class="budget-header">
-        <span>الميزانية الشهرية المحددة: <strong id="budgetTarget">$0</strong></span>
-        <span id="budgetPercent">0%</span>
+    <!-- Budget & Savings Goals Grid -->
+    <div class="goals-grid">
+      <!-- Budget Section -->
+      <div class="budget-section glass">
+        <div class="budget-header">
+          <span><span id="txtBudgetLabel">الميزانية الشهرية</span>: <strong id="budgetTarget">0</strong></span>
+          <button class="control-btn" onclick="setBudget()" style="padding: 2px 8px;"><i class="fa-solid fa-pen"></i></button>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+        </div>
       </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+
+      <!-- Savings Goal Section -->
+      <div class="savings-goal-box glass">
+        <div class="budget-header">
+          <span><span id="txtGoalLabel">هدف الادخار</span>: <strong id="goalTarget">0</strong></span>
+          <button class="control-btn" onclick="setSavingsGoal()" style="padding: 2px 8px;"><i class="fa-solid fa-pen"></i></button>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="goalFill" style="width: 0%; background: var(--accent);"></div>
+        </div>
       </div>
     </div>
 
@@ -199,62 +280,92 @@
     <div class="main-grid">
       <!-- Add Transaction Form -->
       <div class="form-box glass">
-        <h3><i class="fa-solid fa-plus-circle"></i> إضافة معاملة جديدة</h3>
+        <h3><i class="fa-solid fa-plus-circle" style="color:var(--primary);"></i> <span id="txtAddTxTitle">إضافة معاملة جديدة</span></h3>
         <form id="txForm">
-          <div class="input-group">
-            <label>نوع المعاملة</label>
-            <select id="type">
-              <option value="expense">مصروف (-)</option>
-              <option value="income">دخل (+)</option>
-            </select>
+          <div class="form-row">
+            <div class="input-group">
+              <label id="lblTxType">نوع المعاملة</label>
+              <select id="type">
+                <option value="expense">مصروف (-)</option>
+                <option value="income">دخل (+)</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label id="lblCategory">التصنيف</label>
+              <select id="category">
+                <option value="طعام">طعام ومشروبات</option>
+                <option value="سكن">سكن وفواتير</option>
+                <option value="مواصلات">مواصلات ونقل</option>
+                <option value="تعليم">تعليم ودورات</option>
+                <option value="ترفيه">ترفيه وتسوق</option>
+                <option value="راتب">راتب / عمل حر</option>
+                <option value="أخرى">أخرى</option>
+              </select>
+            </div>
           </div>
-          <div class="input-group">
-            <label>التصنيف</label>
-            <select id="category">
-              <option value="طعام"> طعام ومشروبات</option>
-              <option value="سكن"> سكن وفواتير</option>
-              <option value="مواصفات"> مواصلات ونقل</option>
-              <option value="تعليم"> تعليم ودورات</option>
-              <option value="ترفيه"> ترفيه وتسوق</option>
-              <option value="راتب"> راتب / عمل حر</option>
-              <option value="أخرى"> أخرى</option>
-            </select>
+
+          <div class="form-row">
+            <div class="input-group">
+              <label id="lblAmount">المبلغ</label>
+              <input type="number" id="amount" placeholder="0.00" required step="any">
+            </div>
+            <div class="input-group">
+              <label id="lblTxCurrency">عملة المعاملة</label>
+              <select id="txCurrency">
+                <option value="USD">دولار ($)</option>
+                <option value="YER">ريال يمني</option>
+                <option value="SAR">ريال سعودي</option>
+                <option value="AED">درهم إماراتي</option>
+                <option value="OMR">ريال عماني</option>
+              </select>
+            </div>
           </div>
+
           <div class="input-group">
-            <label>المبلغ ($)</label>
-            <input type="number" id="amount" placeholder="0.00" required step="any">
+            <label id="lblDescription">الوصف</label>
+            <input type="text" id="description" placeholder="مثال: فاتورة الكهرباء..." required>
           </div>
-          <div class="input-group">
-            <label>الوصف</label>
-            <input type="text" id="description" placeholder="مثال: غداء، اشتراك إنترنت..." required>
+
+          <div class="checkbox-group">
+            <input type="checkbox" id="isRecurring">
+            <label for="isRecurring" id="lblRecurring">معاملة متكررة شهرياً (تثبيت تلقائي)</label>
           </div>
-          <button type="submit" class="btn"><i class="fa-solid fa-check"></i> حفظ المعاملة</button>
+
+          <button type="submit" class="btn" id="btnSaveTx"><i class="fa-solid fa-check"></i> حفظ المعاملة</button>
         </form>
       </div>
 
       <!-- Chart Box -->
       <div class="chart-box glass">
-        <h3><i class="fa-solid fa-chart-pie"></i> توزيع المصاريف حسب التصنيف</h3>
-        <canvas id="expenseChart"></canvas>
+        <h3><i class="fa-solid fa-chart-pie" style="color:var(--accent);"></i> <span id="txtChartTitle">توزيع المصاريف</span></h3>
+        <div class="chart-container">
+          <canvas id="expenseChart"></canvas>
+        </div>
       </div>
     </div>
 
-    <!-- Transactions History -->
+    <!-- Transactions History & Export -->
     <div class="transactions-box glass">
-      <div class="transactions-header">
-        <h3><i class="fa-solid fa-list-check"></i> سجل المعاملات الأخيرة</h3>
+      <div class="tx-header-actions">
+        <h3><i class="fa-solid fa-list-check" style="color:var(--primary);"></i> <span id="txtHistoryTitle">سجل المعاملات</span></h3>
+        
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <input type="text" id="searchInput" class="search-input" placeholder="بحث..." oninput="renderList()">
+          <button class="control-btn" id="exportBtn" onclick="exportToCSV()"><i class="fa-solid fa-file-excel"></i> تصدير Excel</button>
+        </div>
       </div>
+      
       <ul class="tx-list" id="txList"></ul>
     </div>
   </div>
 
-  <!-- Firebase SDK v10 Modules -->
+  <!-- Firebase & App Script Module -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    // Firebase Config المفاتيح الخاصة بمشروعك
+    // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyAZa3vYxaetE8zmW6zDqT3ew7pjX2Cx4F8",
       authDomain: "smart-wellat.firebaseapp.com",
@@ -265,168 +376,332 @@
       measurementId: "G-CGCWMYZS1Z"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    // State Variables
     let currentUser = null;
+    let isGuest = false;
     let transactions = [];
     let monthlyBudget = 1000;
+    let savingsGoal = 5000;
+    let selectedCurrency = "USD";
+    let currentLang = "ar";
+    let currentTheme = "dark";
     let myChart = null;
 
-    // Login with Google
+    const exchangeRates = { USD: 1, SAR: 3.75, AED: 3.67, OMR: 0.38, YER: 530 };
+    const currencySymbols = { USD: '$', SAR: 'ر.س', AED: 'د.إ', OMR: 'ر.ع', YER: 'ر.ي' };
+  // Translations Dictionary
+    const i18n = {
+      ar: {
+        appTitle: "محفظتي الذكية",
+        authTitle: "محفظتي الذكية",
+        authDesc: "تطبيق الإدارة المالية الشامل لجميع العملات مع المزامنة التلقائية والعمل بدون إنترنت.",
+        googleLogin: "تسجيل الدخول بحساب Google",
+        guestLogin: "متابعة كزائر (تخزين محلي)",
+        income: "إجمالي الدخل",
+        expense: "إجمالي المصاريف",
+        savings: "المتبقي / المدخرات",
+        budget: "الميزانية الشهرية",
+        goal: "هدف الادخار",
+        addTx: "إضافة معاملة جديدة",
+        type: "نوع المعاملة",
+        category: "التصنيف",
+        amount: "المبلغ",
+        txCurrency: "عملة المعاملة",
+        description: "الوصف",
+        recurring: "معاملة متكررة شهرياً",
+        save: "حفظ المعاملة",
+        chart: "توزيع المصاريف",
+        history: "سجل المعاملات",
+        budgetAlert: "تنبيه: لقد تجاوزت أو اقتربت جداً من حد الميزانية الشهرية!"
+      },
+      en: {
+        appTitle: "Smart Wallet",
+        authTitle: "Smart Wallet",
+        authDesc: "All-in-one financial management app for multiple currencies with offline & cloud sync.",
+        googleLogin: "Sign in with Google",
+        guestLogin: "Continue as Guest (Local Storage)",
+        income: "Total Income",
+        expense: "Total Expense",
+        savings: "Net Balance",
+        budget: "Monthly Budget",
+        goal: "Savings Goal",
+        addTx: "Add New Transaction",
+        type: "Type",
+        category: "Category",
+        amount: "Amount",
+        txCurrency: "Currency",
+        description: "Description",
+        recurring: "Monthly Recurring",
+        save: "Save Transaction",
+        chart: "Expenses Breakdown",
+        history: "Transaction History",
+        budgetAlert: "Warning: You are close to or over your monthly budget!"
+      }
+    };
+
+    // PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swCode = `self.addEventListener('fetch', function(e) {});`;
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+      });
+    }
+
+    // Handlers & Auth
     document.getElementById('loginBtn').addEventListener('click', () => {
       const provider = new GoogleAuthProvider();
-      signInWithPopup(auth, provider).catch(err => alert("خطأ أثناء تسجيل الدخول: " + err.message));
+      signInWithPopup(auth, provider).catch(err => alert("Error logging in: " + err.message));
     });
 
-    // Logout
+    document.getElementById('guestBtn').addEventListener('click', () => {
+      isGuest = true;
+      currentUser = null;
+      loadGuestData();
+      showDashboard();
+    });
+
     document.getElementById('logoutBtn').addEventListener('click', () => {
-      signOut(auth);
+      if(isGuest) { isGuest = false; showAuth(); } 
+      else { signOut(auth); }
     });
 
-    // Monitor Auth State
     onAuthStateChanged(auth, (user) => {
       if (user) {
         currentUser = user;
-        document.getElementById('authScreen').style.display = 'none';
-        document.getElementById('appScreen').style.display = 'block';
-        document.getElementById('userName').textContent = user.displayName;
-        document.getElementById('userImg').src = user.photoURL || 'https://via.placeholder.com/40';
-
-        initChart();
+        isGuest = false;
+        showDashboard();
+        document.getElementById('userImg').src = user.photoURL || '';
+        document.getElementById('userImg').style.display = 'inline-block';
         listenToUserData();
-      } else {
-        currentUser = null;
-        document.getElementById('authScreen').style.display = 'flex';
-        document.getElementById('appScreen').style.display = 'none';
+      } else if (!isGuest) {
+        showAuth();
       }
     });
 
-    // Real-time Firestore Sync
+    function showDashboard() {
+      document.getElementById('authScreen').style.display = 'none';
+      document.getElementById('appScreen').style.display = 'block';
+      initChart();
+    }
+
+    function showAuth() {
+      document.getElementById('authScreen').style.display = 'flex';
+      document.getElementById('appScreen').style.display = 'none';
+    }
+
+    // Firestore Sync & Guest Storage
     function listenToUserData() {
       if (!currentUser) return;
       const userDocRef = doc(db, "users", currentUser.uid);
-
       onSnapshot(userDocRef, (docSnap) => {
         if (docSnap.exists()) {
           const data = docSnap.data();
           transactions = data.transactions || [];
           monthlyBudget = data.monthlyBudget || 1000;
+          savingsGoal = data.savingsGoal || 5000;
+          selectedCurrency = data.selectedCurrency || "USD";
+          document.getElementById('currencySelect').value = selectedCurrency;
         } else {
-          transactions = [];
-          monthlyBudget = 1000;
-          syncToFirebase();
+          syncData();
         }
         updateApp();
       });
     }
 
-    // Save to Firestore
-    async function syncToFirebase() {
-      if (!currentUser) return;
-      const userDocRef = doc(db, "users", currentUser.uid);
-      await setDoc(userDocRef, {
-        transactions: transactions,
-        monthlyBudget: monthlyBudget
-      }, { merge: true });
+    function loadGuestData() {
+      transactions = JSON.parse(localStorage.getItem('wallet_tx') || '[]');
+      monthlyBudget = parseFloat(localStorage.getItem('wallet_budget') || '1000');
+      savingsGoal = parseFloat(localStorage.getItem('wallet_goal') || '5000');
+      selectedCurrency = localStorage.getItem('wallet_currency') || 'USD';
+      document.getElementById('currencySelect').value = selectedCurrency;
+      updateApp();
     }
 
-    // Add Transaction
+    async function syncData() {
+      if (currentUser) {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        await setDoc(userDocRef, { transactions, monthlyBudget, savingsGoal, selectedCurrency }, { merge: true });
+      } else if (isGuest) {
+        localStorage.setItem('wallet_tx', JSON.stringify(transactions));
+        localStorage.setItem('wallet_budget', monthlyBudget.toString());
+        localStorage.setItem('wallet_goal', savingsGoal.toString());
+        localStorage.setItem('wallet_currency', selectedCurrency);
+      }
+    }
+
+    // Currency Switcher
+    document.getElementById('currencySelect').addEventListener('change', (e) => {
+      selectedCurrency = e.target.value;
+      syncData();
+      updateApp();
+    });
+
+    // Theme & Language Controls
+    document.getElementById('themeToggleBtn').addEventListener('click', () => {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      document.getElementById('themeToggleBtn').innerHTML = currentTheme === 'dark' ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
+    });
+
+    document.getElementById('langToggleBtn').addEventListener('click', () => {
+      currentLang = currentLang === 'ar' ? 'en' : 'ar';
+      document.documentElement.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+      document.getElementById('langText').textContent = currentLang === 'ar' ? 'EN' : 'عربي';
+      applyLanguage();
+    });
+
+    function applyLanguage() {
+      const t = i18n[currentLang];
+      document.getElementById('txtAppTitle').textContent = t.appTitle;
+      document.getElementById('txtAuthTitle').textContent = t.authTitle;
+      document.getElementById('txtAuthDesc').textContent = t.authDesc;
+      document.getElementById('txtGoogleLogin').textContent = t.googleLogin;
+      document.getElementById('txtGuestLogin').textContent = t.guestLogin;
+      document.getElementById('txtIncomeLabel').textContent = t.income;
+      document.getElementById('txtExpenseLabel').textContent = t.expense;
+      document.getElementById('txtSavingsLabel').textContent = t.savings;
+      document.getElementById('txtBudgetLabel').textContent = t.budget;
+      document.getElementById('txtGoalLabel').textContent = t.goal;
+      document.getElementById('txtAddTxTitle').textContent = t.addTx;
+      document.getElementById('lblTxType').textContent = t.type;
+      document.getElementById('lblCategory').textContent = t.category;
+      document.getElementById('lblAmount').textContent = t.amount;
+      document.getElementById('lblTxCurrency').textContent = t.txCurrency;
+      document.getElementById('lblDescription').textContent = t.description;
+      document.getElementById('lblRecurring').textContent = t.recurring;
+      document.getElementById('btnSaveTx').innerHTML = `<i class="fa-solid fa-check"></i> ${t.save}`;
+      document.getElementById('txtChartTitle').textContent = t.chart;
+      document.getElementById('txtHistoryTitle').textContent = t.history;
+      document.getElementById('txtBudgetAlert').textContent = t.budgetAlert;
+      updateApp();
+    }
+
+    // Currency Helpers
+    function convertToUSD(amount, curr) { return amount / (exchangeRates[curr] || 1); }
+    function convertFromUSD(amountUSD, targetCurr) { return amountUSD * (exchangeRates[targetCurr] || 1); }
+
+    // Form Submit
     document.getElementById('txForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const type = document.getElementById('type').value;
       const category = document.getElementById('category').value;
       const amount = parseFloat(document.getElementById('amount').value);
+      const txCurr = document.getElementById('txCurrency').value;
       const description = document.getElementById('description').value;
+      const isRecurring = document.getElementById('isRecurring').checked;
 
-      const transaction = {
+      const amountUSD = convertToUSD(amount, txCurr);
+
+      transactions.push({
         id: Date.now(),
-        type, category, amount, description,
+        type, category, amountUSD,
+        description: isRecurring ? `[🔄] ${description}` : description,
         date: new Date().toLocaleDateString('ar-EG')
-      };
+      });
 
-      transactions.push(transaction);
-      syncToFirebase();
+      syncData();
       document.getElementById('txForm').reset();
     });
 
-    // Update UI
+    // Render & Update UI
     function updateApp() {
-      const income = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
-      const expense = transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + t.amount, 0);
-      const savings = income - expense;
+      const currSymbol = currencySymbols[selectedCurrency] || '$';
 
-      document.getElementById('incomeVal').textContent = `$${income.toFixed(2)}`;
-      document.getElementById('expenseVal').textContent = `$${expense.toFixed(2)}`;
-      document.getElementById('savingsVal').textContent = `$${savings.toFixed(2)}`;
-      document.getElementById('budgetTarget').textContent = `$${monthlyBudget.toFixed(2)}`;
+      const incomeUSD = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amountUSD, 0);
+      const expenseUSD = transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + t.amountUSD, 0);
+      const savingsUSD = incomeUSD - expenseUSD;
 
-      const percentUsed = monthlyBudget > 0 ? (expense / monthlyBudget) * 100 : 0;
-      const fillEl = document.getElementById('progressFill');
-      fillEl.style.width = `${Math.min(percentUsed, 100)}%`;
-      document.getElementById('budgetPercent').textContent = `${percentUsed.toFixed(1)}%`;
+      const income = convertFromUSD(incomeUSD, selectedCurrency);
+      const expense = convertFromUSD(expenseUSD, selectedCurrency);
+      const savings = convertFromUSD(savingsUSD, selectedCurrency);
+      const budget = convertFromUSD(monthlyBudget, selectedCurrency);
+      const goal = convertFromUSD(savingsGoal, selectedCurrency);
 
-      const alertEl = document.getElementById('budgetAlert');
-      if (percentUsed >= 85) {
-        alertEl.style.display = 'block';
-        fillEl.style.background = 'var(--danger)';
-      } else {
-        alertEl.style.display = 'none';
-        fillEl.style.background = 'var(--primary)';
-      }
+      document.getElementById('incomeVal').textContent = `${income.toLocaleString()} ${currSymbol}`;
+      document.getElementById('expenseVal').textContent = `${expense.toLocaleString()} ${currSymbol}`;
+      document.getElementById('savingsVal').textContent = `${savings.toLocaleString()} ${currSymbol}`;
+      document.getElementById('budgetTarget').textContent = `${budget.toLocaleString()} ${currSymbol}`;
+      document.getElementById('goalTarget').textContent = `${goal.toLocaleString()} ${currSymbol}`;
 
-      renderList();
+      // Progress bars
+      const budgetPercent = budget > 0 ? (expense / budget) * 100 : 0;
+      document.getElementById('progressFill').style.width = `${Math.min(budgetPercent, 100)}%`;
+
+      const goalPercent = goal > 0 ? (savings / goal) * 100 : 0;
+      document.getElementById('goalFill').style.width = `${Math.min(Math.max(goalPercent, 0), 100)}%`;
+
+      // Alert
+      document.getElementById('budgetAlert').style.display = budgetPercent >= 85 ? 'block' : 'none';
+
+      window.renderList();
       updateChart();
     }
-
-    function renderList() {
+window.renderList = function() {
       const listEl = document.getElementById('txList');
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const currSymbol = currencySymbols[selectedCurrency] || '$';
       listEl.innerHTML = '';
 
-      if (transactions.length === 0) {
-        listEl.innerHTML = '<li style="text-align:center; color:var(--text-muted); padding:20px;">لا يوجد معاملات مسجلة بعد</li>';
+      const filtered = transactions.filter(t => t.description.toLowerCase().includes(search) || t.category.includes(search));
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = '<li style="text-align:center; color:var(--text-muted); padding:20px;">لا يوجد نتائج</li>';
         return;
       }
 
-      transactions.slice().reverse().forEach(t => {
+      filtered.slice().reverse().forEach(t => {
         const item = document.createElement('li');
         item.className = 'tx-item';
         const isIncome = t.type === 'income';
+        const displayAmt = convertFromUSD(t.amountUSD, selectedCurrency);
 
         item.innerHTML = `
           <div class="tx-info">
             <div class="tx-icon"><i class="fa-solid ${getCategoryIcon(t.category)}"></i></div>
-            <div>
+            <div class="tx-details">
               <strong>${t.description}</strong>
-              <div style="font-size:0.75rem; color:var(--text-muted);">${t.category} • ${t.date}</div>
+              <div style="font-size:0.72rem; color:var(--text-muted);">${t.category} • ${t.date}</div>
             </div>
           </div>
-          <div style="display:flex; align-items:center;">
+          <div style="display:flex; align-items:center; gap:8px;">
             <span class="tx-amount ${isIncome ? 'plus' : 'minus'}">
-              ${isIncome ? '+' : '-'}$${t.amount.toFixed(2)}
+              ${isIncome ? '+' : '-'}${displayAmt.toLocaleString()} ${currSymbol}
             </span>
-            <button class="delete-btn" data-id="${t.id}"><i class="fa-solid fa-xmark"></i></button>
+            <button class="delete-btn" onclick="deleteTx(${t.id})"><i class="fa-solid fa-xmark"></i></button>
           </div>
         `;
         listEl.appendChild(item);
       });
+    };
 
-      document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const id = Number(btn.getAttribute('data-id'));
-          transactions = transactions.filter(t => t.id !== id);
-          syncToFirebase();
-        });
+    window.deleteTx = function(id) {
+      transactions = transactions.filter(t => t.id !== id);
+      syncData();
+    };
+
+    window.exportToCSV = function() {
+      if (transactions.length === 0) return alert("لا يوجد بيانات للتصدير!");
+      let csv = "ID,Type,Category,Description,Amount(USD),Date\n";
+      transactions.forEach(t => {
+        csv += `${t.id},${t.type},${t.category},"${t.description}",${t.amountUSD},${t.date}\n`;
       });
-    }
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `SmartWallet_Report_${new Date().toISOString().slice(0,10)}.csv`;
+      link.click();
+    };
 
     function getCategoryIcon(cat) {
       switch (cat) {
         case 'طعام': return 'fa-utensils';
         case 'سكن': return 'fa-house';
-        case 'مواصفات': return 'fa-bus';
+        case 'مواصلات': return 'fa-bus';
         case 'تعليم': return 'fa-graduation-cap';
         case 'ترفيه': return 'fa-gamepad';
         case 'راتب': return 'fa-money-bill-wave';
@@ -439,19 +714,8 @@
       const ctx = document.getElementById('expenseChart').getContext('2d');
       myChart = new Chart(ctx, {
         type: 'doughnut',
-        data: {
-          labels: [],
-          datasets: [{
-            data: [],
-            backgroundColor: ['#ef4444', '#3b82f6', '#f59e0b', '#10b981', '#8b5cf6', '#ec4899', '#64748b']
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { position: 'bottom', labels: { color: '#f8fafc', font: { family: 'Cairo' } } }
-          }
-        }
+        data: { labels: [], datasets: [{ data: [], backgroundColor: ['#ef4444', '#3b82f6', '#f59e0b', '#10b981', '#8b5cf6', '#ec4899', '#64748b'] }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { family: 'Cairo', size: 10 } } } } }
       });
     }
 
@@ -459,19 +723,29 @@
       if (!myChart) return;
       const categories = {};
       transactions.filter(t => t.type === 'expense').forEach(t => {
-        categories[t.category] = (categories[t.category] || 0) + t.amount;
+        const val = convertFromUSD(t.amountUSD, selectedCurrency);
+        categories[t.category] = (categories[t.category] || 0) + val;
       });
-
       myChart.data.labels = Object.keys(categories);
       myChart.data.datasets[0].data = Object.values(categories);
       myChart.update();
     }
 
     window.setBudget = () => {
-      const val = prompt('أدخل قيمة الميزانية الشهرية المستهدفة ($):', monthlyBudget);
+      const currentVal = convertFromUSD(monthlyBudget, selectedCurrency);
+      const val = prompt('الميزانية الشهرية الجديدة:', currentVal.toFixed(0));
       if (val !== null && !isNaN(parseFloat(val))) {
-        monthlyBudget = parseFloat(val);
-        syncToFirebase();
+        monthlyBudget = convertToUSD(parseFloat(val), selectedCurrency);
+        syncData();
+      }
+    };
+
+    window.setSavingsGoal = () => {
+      const currentVal = convertFromUSD(savingsGoal, selectedCurrency);
+      const val = prompt('هدف الادخار الجديد:', currentVal.toFixed(0));
+      if (val !== null && !isNaN(parseFloat(val))) {
+        savingsGoal = convertToUSD(parseFloat(val), selectedCurrency);
+        syncData();
       }
     };
   </script>
