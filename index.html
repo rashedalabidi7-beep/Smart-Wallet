@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>محفظتي الذكية | Smart Wallet Pro</title>
   
-  <!-- Manifest & Theme for PWA -->
   <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Smart%20Wallet%22,%22short_name%22:%22Wallet%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22#0b132b%22,%22theme_color%22:%22#10b981%22}">
   <meta name="theme-color" content="#10b981">
 
@@ -19,7 +18,7 @@
   <style>
     :root {
       --bg: #0b132b;
-      --bg-card: rgba(28, 37, 65, 0.7);
+      --bg-card: rgba(28, 37, 65, 0.75);
       --border-line: rgba(255, 255, 255, 0.12);
       --primary: #10b981;
       --danger: #ef4444;
@@ -31,7 +30,7 @@
 
     [data-theme="light"] {
       --bg: #f1f5f9;
-      --bg-card: rgba(255, 255, 255, 0.85);
+      --bg-card: rgba(255, 255, 255, 0.9);
       --border-line: rgba(0, 0, 0, 0.08);
       --primary: #059669;
       --danger: #dc2626;
@@ -42,13 +41,7 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', 'Inter', sans-serif; transition: background 0.3s, color 0.3s; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding-bottom: 40px;
-      overflow-x: hidden;
-    }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 40px; overflow-x: hidden; }
 
     .container { width: min(1150px, 94%); margin: auto; padding-top: 15px; }
 
@@ -61,28 +54,36 @@
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
     }
 
-    /* Auth Screen */
-    .auth-container {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      min-height: 85vh; text-align: center; padding: 20px;
+    /* Landing Page Section */
+    .hero-section {
+      text-align: center; padding: 60px 20px 40px; max-width: 900px; margin: auto;
     }
-    .auth-card { padding: 40px 25px; max-width: 440px; width: 100%; }
-    .auth-card i.logo-icon { font-size: 3.5rem; color: var(--primary); margin-bottom: 15px; }
-    .auth-card h2 { margin-bottom: 10px; font-weight: 800; }
-    .auth-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px; line-height: 1.6; }
+    .hero-badge {
+      display: inline-block; padding: 6px 16px; border-radius: 30px; background: rgba(16, 185, 129, 0.15);
+      color: var(--primary); font-size: 0.85rem; font-weight: 700; margin-bottom: 20px; border: 1px solid var(--primary);
+    }
+    .hero-title { font-size: 2.5rem; font-weight: 800; line-height: 1.3; margin-bottom: 15px; }
+    .hero-subtitle { color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 30px; }
     
-    .btn-group-auth { display: flex; flex-direction: column; gap: 12px; width: 100%; }
-    .google-btn {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      width: 100%; padding: 13px; border-radius: 12px; border: none;
-      background: #ffffff; color: #333; font-weight: 700; cursor: pointer; font-size: 0.95rem;
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin: 40px 0; text-align: right;
     }
-    .guest-btn {
-      width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-line);
-      background: transparent; color: var(--text); font-weight: 600; cursor: pointer; font-size: 0.9rem;
-    }
+    [dir="ltr"] .features-grid { text-align: left; }
+    .feature-card { padding: 25px; border-radius: 16px; }
+    .feature-card i { font-size: 2rem; color: var(--primary); margin-bottom: 15px; }
+    .feature-card h3 { font-size: 1.1rem; margin-bottom: 8px; font-weight: 700; }
+    .feature-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
 
-    /* Header & Controls */
+    /* Auth Actions */
+    .auth-actions { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
+    .btn-main {
+      padding: 14px 28px; border-radius: 12px; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-secondary { background: var(--input-bg); color: var(--text); border: 1px solid var(--border-line); }
+
+    /* App Header */
     header {
       display: flex; justify-content: space-between; align-items: center;
       padding: 15px 20px; border-radius: 16px; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
@@ -98,13 +99,8 @@
 
     .user-avatar { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--primary); }
 
-    /* Cards Grid */
-    .dashboard-grid { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
-      gap: 15px; 
-      margin-bottom: 20px; 
-    }
+    /* Dashboard Cards */
+    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
     .card { padding: 18px; text-align: center; }
     .card h4 { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 6px; }
     .card .amount { font-size: 1.5rem; font-weight: 800; word-break: break-word; }
@@ -112,7 +108,6 @@
     .card.expense .amount { color: var(--danger); }
     .card.savings .amount { color: var(--accent); }
 
-    /* Savings Goal & Budget Section */
     .goals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
     @media (max-width: 768px) { .goals-grid { grid-template-columns: 1fr; } }
 
@@ -121,7 +116,7 @@
     .progress-bar { width: 100%; height: 10px; background: var(--border-line); border-radius: 10px; overflow: hidden; }
     .progress-fill { height: 100%; background: var(--primary); transition: width 0.4s ease; border-radius: 10px; }
 
-    /* Form & Chart Grid */
+    /* Form & Chart Layout */
     .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
     @media (max-width: 850px) { .main-grid { grid-template-columns: 1fr; } }
 
@@ -145,9 +140,8 @@
       width: 100%; padding: 11px; border-radius: 10px; border: none; font-weight: 700;
       background: var(--primary); color: #ffffff; cursor: pointer; font-size: 0.9rem;
     }
-    .btn:hover { opacity: 0.9; }
 
-    /* Transactions & Search Header */
+    /* Transactions List */
     .transactions-box { padding: 20px; }
     .tx-header-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
     .search-input { max-width: 250px; }
@@ -180,20 +174,44 @@
 </head>
 <body>
 
-  <!-- Auth Screen -->
-  <div id="authScreen" class="auth-container">
-    <div class="auth-card glass">
-      <i class="fa-solid fa-wallet logo-icon"></i>
-      <h2 id="txtAuthTitle">محفظتي الذكية</h2>
-      <p id="txtAuthDesc">تطبيق الإدارة المالية الشامل لجميع العملات مع المزامنة التلقائية والعمل بدون إنترنت.</p>
+  <!-- Landing Page & Auth Container -->
+  <div id="landingScreen" class="container">
+    <div class="hero-section">
+      <span class="hero-badge"><i class="fa-solid fa-shield-halved"></i> آمن 100% وخالٍ من الإعلانات</span>
+      <h1 class="hero-title" id="txtHeroTitle">إدارة أموالك أصبحت أسهل وأكثر ذكاءً</h1>
+      <p class="hero-subtitle" id="txtHeroSub">تطبيق مالي مجاني تماماً يتيح لك تتبع المصاريف، إدارة الميزانية، وتتبع أهداف الادخار بجميع العملات بدون تعقيد.</p>
       
-      <div class="btn-group-auth">
-        <button class="google-btn" id="loginBtn">
-          <i class="fa-brands fa-google" style="color:#ea4335;"></i> <span id="txtGoogleLogin">تسجيل الدخول بحساب Google</span>
+      <div class="auth-actions">
+        <button class="btn-main btn-primary" id="loginBtn">
+          <i class="fa-brands fa-google"></i> <span id="txtGoogleLogin">الدخول بحساب Google</span>
         </button>
-        <button class="guest-btn" id="guestBtn">
-          <i class="fa-solid fa-user-clock"></i> <span id="txtGuestLogin">متابعة كزائر (تخزين محلي)</span>
+        <button class="btn-main btn-secondary" id="guestBtn">
+          <i class="fa-solid fa-rocket"></i> <span id="txtGuestLogin">تجربة سريعة بدون حساب</span>
         </button>
+      </div>
+
+      <!-- Features Highlights -->
+      <div class="features-grid">
+        <div class="feature-card glass">
+          <i class="fa-solid fa-coins"></i>
+          <h3 id="ft1Title">تعدد العملات</h3>
+          <p id="ft1Desc">دعم كامل للريال اليمني، السعودي، الدولار وغيرها مع حفظ المبالغ بفرز دقيق.</p>
+        </div>
+        <div class="feature-card glass">
+          <i class="fa-solid fa-wifi"></i>
+          <h3 id="ft2Title">يعمل بدون إنترنت</h3>
+          <p id="ft2Desc">سجل معاملتك في أي وقت وأي مكان وسيتزامن تلقائياً فور توفر الاتصال.</p>
+        </div>
+        <div class="feature-card glass">
+          <i class="fa-solid fa-ban"></i>
+          <h3 id="ft3Title">بدون إعلانات مزعجة</h3>
+          <p id="ft3Desc">تجربة بسيطة ومريحة للعين تضمن لك السرعة والسلاسة في الاستخدام.</p>
+        </div>
+        <div class="feature-card glass">
+          <i class="fa-solid fa-file-csv"></i>
+          <h3 id="ft4Title">تصدير وتقارير</h3>
+          <p id="ft4Desc">احصل على تقاريرك المالية مجمعة في ملفات Excel بضغطة زر واحدة.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -207,22 +225,18 @@
         <span id="txtAppTitle">محفظتي الذكية</span>
       </div>
       <div class="top-controls">
-        <!-- Language Switch -->
         <button class="control-btn" id="langToggleBtn"><i class="fa-solid fa-globe"></i> <span id="langText">EN</span></button>
-        
-        <!-- Theme Switch -->
         <button class="control-btn" id="themeToggleBtn"><i class="fa-solid fa-moon"></i></button>
 
-        <!-- Currency Selector -->
-        <select id="currencySelect" class="control-btn" title="العملة">
-          <option value="USD">USD ($)</option>
-          <option value="YER">YER (ريال يمني)</option>
-          <option value="SAR">SAR (ريال سعودي)</option>
-          <option value="AED">AED (درهم إماراتي)</option>
-          <option value="OMR">OMR (ريال عماني)</option>
+        <!-- Dynamic Currency Filter -->
+        <select id="currencySelect" class="control-btn" title="العملة المعروضة">
+          <option value="USD">عرض بـ USD ($)</option>
+          <option value="YER">عرض بـ YER (ريال يمني)</option>
+          <option value="SAR">عرض بـ SAR (ريال سعودي)</option>
+          <option value="AED">عرض بـ AED (درهم إماراتي)</option>
+          <option value="OMR">عرض بـ OMR (ريال عماني)</option>
         </select>
 
-        <!-- User Profile / Logout -->
         <div id="userProfile" style="display: flex; align-items: center; gap: 8px;">
           <img id="userImg" class="user-avatar" src="" alt="User" style="display:none;">
           <button class="control-btn" id="logoutBtn" style="color:var(--danger);"><i class="fa-solid fa-right-from-bracket"></i></button>
@@ -230,12 +244,11 @@
       </div>
     </header>
 
-    <!-- Alert Banner -->
     <div class="alert" id="budgetAlert">
       <i class="fa-solid fa-triangle-exclamation"></i> <span id="txtBudgetAlert">تنبيه: لقد تجاوزت أو اقتربت جداً من حد الميزانية الشهرية!</span>
     </div>
 
-    <!-- Dashboard Cards -->
+    <!-- Dashboard Summary Cards -->
     <div class="dashboard-grid">
       <div class="card glass income">
         <h4 id="txtIncomeLabel">إجمالي الدخل</h4>
@@ -251,9 +264,8 @@
       </div>
     </div>
 
-    <!-- Budget & Savings Goals Grid -->
+    <!-- Goals Grid -->
     <div class="goals-grid">
-      <!-- Budget Section -->
       <div class="budget-section glass">
         <div class="budget-header">
           <span><span id="txtBudgetLabel">الميزانية الشهرية</span>: <strong id="budgetTarget">0</strong></span>
@@ -264,7 +276,6 @@
         </div>
       </div>
 
-      <!-- Savings Goal Section -->
       <div class="savings-goal-box glass">
         <div class="budget-header">
           <span><span id="txtGoalLabel">هدف الادخار</span>: <strong id="goalTarget">0</strong></span>
@@ -276,9 +287,8 @@
       </div>
     </div>
 
-    <!-- Main Grid: Form & Chart -->
+    <!-- Main Section: Form & Chart -->
     <div class="main-grid">
-      <!-- Add Transaction Form -->
       <div class="form-box glass">
         <h3><i class="fa-solid fa-plus-circle" style="color:var(--primary);"></i> <span id="txtAddTxTitle">إضافة معاملة جديدة</span></h3>
         <form id="txForm">
@@ -310,32 +320,31 @@
               <input type="number" id="amount" placeholder="0.00" required step="any">
             </div>
             <div class="input-group">
-              <label id="lblTxCurrency">عملة المعاملة</label>
+              <label id="lblTxCurrency">عملة المعاملة الحالية</label>
               <select id="txCurrency">
-                <option value="USD">دولار ($)</option>
-                <option value="YER">ريال يمني</option>
-                <option value="SAR">ريال سعودي</option>
-                <option value="AED">درهم إماراتي</option>
-                <option value="OMR">ريال عماني</option>
+                <option value="YER">ريال يمني (YER)</option>
+                <option value="USD">دولار (USD)</option>
+                <option value="SAR">ريال سعودي (SAR)</option>
+                <option value="AED">درهم إماراتي (AED)</option>
+                <option value="OMR">ريال عماني (OMR)</option>
               </select>
             </div>
           </div>
 
           <div class="input-group">
             <label id="lblDescription">الوصف</label>
-            <input type="text" id="description" placeholder="مثال: فاتورة الكهرباء..." required>
+            <input type="text" id="description" placeholder="مثال: شراء أغراض..." required>
           </div>
 
           <div class="checkbox-group">
             <input type="checkbox" id="isRecurring">
-            <label for="isRecurring" id="lblRecurring">معاملة متكررة شهرياً (تثبيت تلقائي)</label>
+            <label for="isRecurring" id="lblRecurring">معاملة متكررة شهرياً</label>
           </div>
 
           <button type="submit" class="btn" id="btnSaveTx"><i class="fa-solid fa-check"></i> حفظ المعاملة</button>
         </form>
       </div>
 
-      <!-- Chart Box -->
       <div class="chart-box glass">
         <h3><i class="fa-solid fa-chart-pie" style="color:var(--accent);"></i> <span id="txtChartTitle">توزيع المصاريف</span></h3>
         <div class="chart-container">
@@ -344,7 +353,7 @@
       </div>
     </div>
 
-    <!-- Transactions History & Export -->
+    <!-- History List -->
     <div class="transactions-box glass">
       <div class="tx-header-actions">
         <h3><i class="fa-solid fa-list-check" style="color:var(--primary);"></i> <span id="txtHistoryTitle">سجل المعاملات</span></h3>
@@ -359,13 +368,12 @@
     </div>
   </div>
 
-  <!-- Firebase & App Script Module -->
+  <!-- Firebase & Core Application Module -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyAZa3vYxaetE8zmW6zDqT3ew7pjX2Cx4F8",
       authDomain: "smart-wellat.firebaseapp.com",
@@ -380,7 +388,6 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // State Variables
     let currentUser = null;
     let isGuest = false;
     let transactions = [];
@@ -391,68 +398,45 @@
     let currentTheme = "dark";
     let myChart = null;
 
+    // Standardized Exchange Rates relative to 1 USD
     const exchangeRates = { USD: 1, SAR: 3.75, AED: 3.67, OMR: 0.38, YER: 530 };
     const currencySymbols = { USD: '$', SAR: 'ر.س', AED: 'د.إ', OMR: 'ر.ع', YER: 'ر.ي' };
-  // Translations Dictionary
-    const i18n = {
-      ar: {
+const i18n = {
+  ar: {
         appTitle: "محفظتي الذكية",
-        authTitle: "محفظتي الذكية",
-        authDesc: "تطبيق الإدارة المالية الشامل لجميع العملات مع المزامنة التلقائية والعمل بدون إنترنت.",
-        googleLogin: "تسجيل الدخول بحساب Google",
-        guestLogin: "متابعة كزائر (تخزين محلي)",
-        income: "إجمالي الدخل",
-        expense: "إجمالي المصاريف",
-        savings: "المتبقي / المدخرات",
-        budget: "الميزانية الشهرية",
-        goal: "هدف الادخار",
-        addTx: "إضافة معاملة جديدة",
-        type: "نوع المعاملة",
-        category: "التصنيف",
-        amount: "المبلغ",
-        txCurrency: "عملة المعاملة",
-        description: "الوصف",
-        recurring: "معاملة متكررة شهرياً",
-        save: "حفظ المعاملة",
-        chart: "توزيع المصاريف",
-        history: "سجل المعاملات",
-        budgetAlert: "تنبيه: لقد تجاوزت أو اقتربت جداً من حد الميزانية الشهرية!"
+        heroTitle: "إدارة أموالك أصبحت أسهل وأكثر ذكاءً",
+        heroSub: "تطبيق مالي مجاني تماماً يتيح لك تتبع المصاريف، إدارة الميزانية، وتتبع أهداف الادخار بجميع العملات بدون تعقيد.",
+        googleLogin: "الدخول بحساب Google",
+        guestLogin: "تجربة سريعة بدون حساب",
+        ft1Title: "تعدد العملات", ft1Desc: "دعم كامل للريال اليمني، السعودي، الدولار وغيرها مع حفظ المبالغ بفرز دقيق.",
+        ft2Title: "يعمل بدون إنترنت", ft2Desc: "سجل معاملتك في أي وقت وأي مكان وسيتزامن تلقائياً فور توفر الاتصال.",
+        ft3Title: "بدون إعلانات مزعجة", ft3Desc: "تجربة بسيطة ومريحة للعين تضمن لك السرعة والسلاسة في الاستخدام.",
+        ft4Title: "تصدير وتقارير", ft4Desc: "احصل على تقاريرك المالية مجمعة في ملفات Excel بضغطة زر واحدة.",
+        income: "إجمالي الدخل", expense: "إجمالي المصاريف", savings: "المتبقي / المدخرات",
+        budget: "الميزانية الشهرية", goal: "هدف الادخار", addTx: "إضافة معاملة جديدة",
+        type: "نوع المعاملة", category: "التصنيف", amount: "المبلغ", txCurrency: "عملة المعاملة الحالية",
+        description: "الوصف", recurring: "معاملة متكررة شهرياً", save: "حفظ المعاملة",
+        chart: "توزيع المصاريف", history: "سجل المعاملات", budgetAlert: "تنبيه: لقد تجاوزت أو اقتربت جداً من حد الميزانية الشهرية!"
       },
       en: {
         appTitle: "Smart Wallet",
-        authTitle: "Smart Wallet",
-        authDesc: "All-in-one financial management app for multiple currencies with offline & cloud sync.",
+        heroTitle: "Smart & Simple Financial Management",
+        heroSub: "Track expenses, control budgets, and hit savings goals easily across all currencies.",
         googleLogin: "Sign in with Google",
-        guestLogin: "Continue as Guest (Local Storage)",
-        income: "Total Income",
-        expense: "Total Expense",
-        savings: "Net Balance",
-        budget: "Monthly Budget",
-        goal: "Savings Goal",
-        addTx: "Add New Transaction",
-        type: "Type",
-        category: "Category",
-        amount: "Amount",
-        txCurrency: "Currency",
-        description: "Description",
-        recurring: "Monthly Recurring",
-        save: "Save Transaction",
-        chart: "Expenses Breakdown",
-        history: "Transaction History",
-        budgetAlert: "Warning: You are close to or over your monthly budget!"
+        guestLogin: "Quick Guest Mode",
+        ft1Title: "Multi-Currency", ft1Desc: "Full support for YER, SAR, USD with accurate local and global conversion.",
+        ft2Title: "Offline First", ft2Desc: "Add transactions anytime. Data syncs seamlessly once online.",
+        ft3Title: "100% Ad-Free", ft3Desc: "Clean, distraction-free UI built for speed and effortless tracking.",
+        ft4Title: "Export Reports", ft4Desc: "Download structured financial reports into Excel CSV with one click.",
+        income: "Total Income", expense: "Total Expense", savings: "Net Balance",
+        budget: "Monthly Budget", goal: "Savings Goal", addTx: "Add New Transaction",
+        type: "Type", category: "Category", amount: "Amount", txCurrency: "Transaction Currency",
+        description: "Description", recurring: "Monthly Recurring", save: "Save Transaction",
+        chart: "Expenses Breakdown", history: "Transaction History", budgetAlert: "Warning: Approaching or exceeding monthly budget!"
       }
     };
 
-    // PWA Service Worker Registration
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        const swCode = `self.addEventListener('fetch', function(e) {});`;
-        const blob = new Blob([swCode], { type: 'application/javascript' });
-        navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
-      });
-    }
-
-    // Handlers & Auth
+    // Event Listeners
     document.getElementById('loginBtn').addEventListener('click', () => {
       const provider = new GoogleAuthProvider();
       signInWithPopup(auth, provider).catch(err => alert("Error logging in: " + err.message));
@@ -466,7 +450,7 @@
     });
 
     document.getElementById('logoutBtn').addEventListener('click', () => {
-      if(isGuest) { isGuest = false; showAuth(); } 
+      if(isGuest) { isGuest = false; showLanding(); } 
       else { signOut(auth); }
     });
 
@@ -479,22 +463,22 @@
         document.getElementById('userImg').style.display = 'inline-block';
         listenToUserData();
       } else if (!isGuest) {
-        showAuth();
+        showLanding();
       }
     });
 
     function showDashboard() {
-      document.getElementById('authScreen').style.display = 'none';
+      document.getElementById('landingScreen').style.display = 'none';
       document.getElementById('appScreen').style.display = 'block';
       initChart();
     }
 
-    function showAuth() {
-      document.getElementById('authScreen').style.display = 'flex';
+    function showLanding() {
+      document.getElementById('landingScreen').style.display = 'block';
       document.getElementById('appScreen').style.display = 'none';
     }
 
-    // Firestore Sync & Guest Storage
+    // Sync Methods
     function listenToUserData() {
       if (!currentUser) return;
       const userDocRef = doc(db, "users", currentUser.uid);
@@ -532,13 +516,12 @@
         localStorage.setItem('wallet_goal', savingsGoal.toString());
         localStorage.setItem('wallet_currency', selectedCurrency);
       }
+      updateApp();
     }
 
-    // Currency Switcher
     document.getElementById('currencySelect').addEventListener('change', (e) => {
       selectedCurrency = e.target.value;
       syncData();
-      updateApp();
     });
 
     // Theme & Language Controls
@@ -558,10 +541,14 @@
     function applyLanguage() {
       const t = i18n[currentLang];
       document.getElementById('txtAppTitle').textContent = t.appTitle;
-      document.getElementById('txtAuthTitle').textContent = t.authTitle;
-      document.getElementById('txtAuthDesc').textContent = t.authDesc;
+      document.getElementById('txtHeroTitle').textContent = t.heroTitle;
+      document.getElementById('txtHeroSub').textContent = t.heroSub;
       document.getElementById('txtGoogleLogin').textContent = t.googleLogin;
       document.getElementById('txtGuestLogin').textContent = t.guestLogin;
+      document.getElementById('ft1Title').textContent = t.ft1Title; document.getElementById('ft1Desc').textContent = t.ft1Desc;
+      document.getElementById('ft2Title').textContent = t.ft2Title; document.getElementById('ft2Desc').textContent = t.ft2Desc;
+      document.getElementById('ft3Title').textContent = t.ft3Title; document.getElementById('ft3Desc').textContent = t.ft3Desc;
+      document.getElementById('ft4Title').textContent = t.ft4Title; document.getElementById('ft4Desc').textContent = t.ft4Desc;
       document.getElementById('txtIncomeLabel').textContent = t.income;
       document.getElementById('txtExpenseLabel').textContent = t.expense;
       document.getElementById('txtSavingsLabel').textContent = t.savings;
@@ -580,12 +567,11 @@
       document.getElementById('txtBudgetAlert').textContent = t.budgetAlert;
       updateApp();
     }
-
-    // Currency Helpers
+// Currency Calculation Helpers
     function convertToUSD(amount, curr) { return amount / (exchangeRates[curr] || 1); }
     function convertFromUSD(amountUSD, targetCurr) { return amountUSD * (exchangeRates[targetCurr] || 1); }
 
-    // Form Submit
+    // Form Handle
     document.getElementById('txForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const type = document.getElementById('type').value;
@@ -599,7 +585,10 @@
 
       transactions.push({
         id: Date.now(),
-        type, category, amountUSD,
+        type, category,
+        originalAmount: amount,
+        originalCurrency: txCurr,
+        amountUSD,
         description: isRecurring ? `[🔄] ${description}` : description,
         date: new Date().toLocaleDateString('ar-EG')
       });
@@ -608,7 +597,7 @@
       document.getElementById('txForm').reset();
     });
 
-    // Render & Update UI
+    // Update Application UI
     function updateApp() {
       const currSymbol = currencySymbols[selectedCurrency] || '$';
 
@@ -622,35 +611,34 @@
       const budget = convertFromUSD(monthlyBudget, selectedCurrency);
       const goal = convertFromUSD(savingsGoal, selectedCurrency);
 
-      document.getElementById('incomeVal').textContent = `${income.toLocaleString()} ${currSymbol}`;
-      document.getElementById('expenseVal').textContent = `${expense.toLocaleString()} ${currSymbol}`;
-      document.getElementById('savingsVal').textContent = `${savings.toLocaleString()} ${currSymbol}`;
-      document.getElementById('budgetTarget').textContent = `${budget.toLocaleString()} ${currSymbol}`;
-      document.getElementById('goalTarget').textContent = `${goal.toLocaleString()} ${currSymbol}`;
+      document.getElementById('incomeVal').textContent = `${income.toLocaleString(undefined, {maximumFractionDigits: 2})} ${currSymbol}`;
+      document.getElementById('expenseVal').textContent = `${expense.toLocaleString(undefined, {maximumFractionDigits: 2})} ${currSymbol}`;
+      document.getElementById('savingsVal').textContent = `${savings.toLocaleString(undefined, {maximumFractionDigits: 2})} ${currSymbol}`;
+      document.getElementById('budgetTarget').textContent = `${budget.toLocaleString(undefined, {maximumFractionDigits: 2})} ${currSymbol}`;
+      document.getElementById('goalTarget').textContent = `${goal.toLocaleString(undefined, {maximumFractionDigits: 2})} ${currSymbol}`;
 
-      // Progress bars
       const budgetPercent = budget > 0 ? (expense / budget) * 100 : 0;
       document.getElementById('progressFill').style.width = `${Math.min(budgetPercent, 100)}%`;
 
       const goalPercent = goal > 0 ? (savings / goal) * 100 : 0;
       document.getElementById('goalFill').style.width = `${Math.min(Math.max(goalPercent, 0), 100)}%`;
 
-      // Alert
       document.getElementById('budgetAlert').style.display = budgetPercent >= 85 ? 'block' : 'none';
 
       window.renderList();
       updateChart();
     }
-window.renderList = function() {
+
+    // Render Transaction List (Preserving original inputted currency display)
+    window.renderList = function() {
       const listEl = document.getElementById('txList');
       const search = document.getElementById('searchInput').value.toLowerCase();
-      const currSymbol = currencySymbols[selectedCurrency] || '$';
       listEl.innerHTML = '';
 
       const filtered = transactions.filter(t => t.description.toLowerCase().includes(search) || t.category.includes(search));
 
       if (filtered.length === 0) {
-        listEl.innerHTML = '<li style="text-align:center; color:var(--text-muted); padding:20px;">لا يوجد نتائج</li>';
+        listEl.innerHTML = '<li style="text-align:center; color:var(--text-muted); padding:20px;">لا يوجد سجلات</li>';
         return;
       }
 
@@ -658,7 +646,10 @@ window.renderList = function() {
         const item = document.createElement('li');
         item.className = 'tx-item';
         const isIncome = t.type === 'income';
-        const displayAmt = convertFromUSD(t.amountUSD, selectedCurrency);
+
+        // Keep originally entered currency or calculate fallback
+        const displayAmt = t.originalAmount ? t.originalAmount : convertFromUSD(t.amountUSD, selectedCurrency);
+        const displayCurrSymbol = currencySymbols[t.originalCurrency || selectedCurrency];
 
         item.innerHTML = `
           <div class="tx-info">
@@ -670,7 +661,7 @@ window.renderList = function() {
           </div>
           <div style="display:flex; align-items:center; gap:8px;">
             <span class="tx-amount ${isIncome ? 'plus' : 'minus'}">
-              ${isIncome ? '+' : '-'}${displayAmt.toLocaleString()} ${currSymbol}
+              ${isIncome ? '+' : '-'}${displayAmt.toLocaleString()} ${displayCurrSymbol}
             </span>
             <button class="delete-btn" onclick="deleteTx(${t.id})"><i class="fa-solid fa-xmark"></i></button>
           </div>
@@ -686,14 +677,14 @@ window.renderList = function() {
 
     window.exportToCSV = function() {
       if (transactions.length === 0) return alert("لا يوجد بيانات للتصدير!");
-      let csv = "ID,Type,Category,Description,Amount(USD),Date\n";
+      let csv = "ID,Type,Category,Description,Original Amount,Original Currency,Amount USD,Date\n";
       transactions.forEach(t => {
-        csv += `${t.id},${t.type},${t.category},"${t.description}",${t.amountUSD},${t.date}\n`;
+        csv += `${t.id},${t.type},${t.category},"${t.description}",${t.originalAmount || t.amountUSD},${t.originalCurrency || 'USD'},${t.amountUSD},${t.date}\n`;
       });
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = `SmartWallet_Report_${new Date().toISOString().slice(0,10)}.csv`;
+      link.download = `SmartWallet_Export_${new Date().toISOString().slice(0,10)}.csv`;
       link.click();
     };
 
