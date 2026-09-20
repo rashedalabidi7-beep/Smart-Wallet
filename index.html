@@ -1,350 +1,153 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>محفظتي الذكية | Smart Wallet</title>
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>محفظتي</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  
   <style>
     :root {
-      --bg: #0b132b;
-      --bg-card: rgba(28, 37, 65, 0.85);
-      --border-line: rgba(255, 255, 255, 0.12);
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
       --primary: #10b981;
       --danger: #ef4444;
-      --accent: #3b82f6;
       --text: #f8fafc;
       --text-muted: #94a3b8;
-      --input-bg: rgba(11, 19, 43, 0.7);
-      --modal-bg: #1c2541;
     }
 
-    [data-theme="light"] {
-      --bg: #f1f5f9;
-      --bg-card: rgba(255, 255, 255, 0.95);
-      --border-line: rgba(0, 0, 0, 0.1);
-      --primary: #059669;
-      --danger: #dc2626;
-      --accent: #2563eb;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --input-bg: #ffffff;
-      --modal-bg: #ffffff;
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 20px 10px; }
+    .container { max-width: 600px; margin: auto; }
+
+    /* Cards & Glass Style */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 15px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: background 0.3s, color 0.3s; }
-    body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 40px; overflow-x: hidden; }
+    /* Auth Screen */
+    .auth-box { text-align: center; padding: 40px 20px; }
+    .auth-box h2 { margin-bottom: 10px; }
+    .auth-box p { color: var(--text-muted); margin-bottom: 25px; font-size: 0.9rem; }
 
-    .container { width: min(1150px, 94%); margin: auto; padding-top: 15px; }
+    /* Header */
+    header { display: flex; justify-content: space-between; align-items: center; }
+    .user-info { display: flex; align-items: center; gap: 10px; }
+    .user-avatar { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--primary); }
 
-    .glass {
-      background: var(--bg-card);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-line);
-      border-radius: 20px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-    }
-
-    .hero-section { text-align: center; padding: 50px 20px 30px; max-width: 900px; margin: auto; }
-    .hero-badge {
-      display: inline-block; padding: 6px 16px; border-radius: 30px; background: rgba(16, 185, 129, 0.15);
-      color: var(--primary); font-size: 0.85rem; font-weight: 700; margin-bottom: 20px; border: 1px solid var(--primary);
-    }
-    .hero-title { font-size: 2.2rem; font-weight: 800; line-height: 1.3; margin-bottom: 15px; }
-    .hero-subtitle { color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 30px; }
-    
-    .auth-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
-    .btn-main {
-      padding: 12px 24px; border-radius: 12px; border: none; font-weight: 700; font-size: 0.9rem; cursor: pointer;
-      display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+    /* Buttons & Inputs */
+    .btn {
+      width: 100%; padding: 12px; border-radius: 10px; border: none;
+      font-weight: 700; cursor: pointer; font-size: 0.95rem; margin-top: 5px;
     }
     .btn-primary { background: var(--primary); color: #fff; }
-    .btn-secondary { background: var(--input-bg); color: var(--text); border: 1px solid var(--border-line); }
+    .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); width: auto; padding: 6px 12px; font-size: 0.8rem; }
 
-    header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 15px 20px; border-radius: 16px; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
-    }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.25rem; color: var(--primary); }
-    .top-controls { display: flex; align-items: center; gap: 8px; }
-    
-    .control-btn {
-      background: var(--input-bg); color: var(--text); border: 1px solid var(--border-line);
-      padding: 8px 14px; border-radius: 10px; font-size: 0.85rem; cursor: pointer; outline: none;
-      display: inline-flex; align-items: center; gap: 6px; font-weight: 700;
-    }
-
-    .user-avatar { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
-
-    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
-    .card { padding: 18px; text-align: center; }
-    .card h4 { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 6px; }
-    .card .amount { font-size: 1.35rem; font-weight: 800; word-break: break-word; }
-    .card.income .amount { color: var(--primary); }
-    .card.expense .amount { color: var(--danger); }
-    .card.savings .amount { color: var(--accent); }
-
-    .goals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-    @media (max-width: 768px) { .goals-grid { grid-template-columns: 1fr; } }
-
-    .budget-section, .savings-goal-box { padding: 18px; }
-    .budget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.88rem; }
-    .progress-bar { width: 100%; height: 10px; background: var(--border-line); border-radius: 10px; overflow: hidden; }
-    .progress-fill { height: 100%; background: var(--primary); transition: width 0.4s ease; border-radius: 10px; }
-
-    .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-    @media (max-width: 850px) { .main-grid { grid-template-columns: 1fr; } }
-
-    .form-box, .chart-box { padding: 20px; }
-    .form-box h3, .chart-box h3 { margin-bottom: 16px; font-size: 1rem; display: flex; align-items: center; gap: 8px; }
-
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
-
-    .input-group { margin-bottom: 12px; }
-    .input-group label { display: block; font-size: 0.8rem; margin-bottom: 5px; color: var(--text-muted); }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
     input, select {
-      width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border-line);
-      background: var(--input-bg); color: var(--text); outline: none; font-size: 0.88rem;
+      width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border);
+      background: #0f172a; color: var(--text); outline: none; font-size: 0.9rem;
     }
 
-    .btn {
-      width: 100%; padding: 11px; border-radius: 10px; border: none; font-weight: 700;
-      background: var(--primary); color: #ffffff; cursor: pointer; font-size: 0.9rem;
-    }
+    /* Summary Dashboard */
+    .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; }
+    .summary-item h5 { color: var(--text-muted); font-size: 0.75rem; margin-bottom: 4px; }
+    .summary-item div { font-weight: 700; font-size: 0.95rem; }
 
-    .transactions-box { padding: 20px; }
-    .tx-header-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
-    .search-input { max-width: 250px; }
-
-    .tx-list { list-style: none; max-height: 350px; overflow-y: auto; }
+    /* Transaction List */
+    .tx-list { list-style: none; margin-top: 10px; }
     .tx-item {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 10px; border-bottom: 1px solid var(--border-line); gap: 10px;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
     }
     .tx-item:last-child { border-bottom: none; }
-    .tx-info { display: flex; align-items: center; gap: 10px; }
-    .tx-icon {
-      width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center;
-      background: var(--border-line); font-size: 0.95rem; flex-shrink: 0;
-    }
-    .tx-details strong { display: block; font-size: 0.88rem; }
-    .tx-amount { font-weight: 700; font-size: 0.92rem; }
-    .tx-amount.plus { color: var(--primary); }
-    .tx-amount.minus { color: var(--danger); }
-    .delete-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 6px; }
-
-    .chart-container { position: relative; height: 250px; width: 100%; display: flex; justify-content: center; }
-
-    /* Modal System */
-    .modal-overlay {
-      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 999;
-      justify-content: center; align-items: center; padding: 15px;
-    }
-    .modal-card {
-      background: var(--modal-bg); border: 1px solid var(--border-line);
-      width: min(520px, 100%); border-radius: 20px; padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-      max-height: 90vh; overflow-y: auto;
-    }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .close-modal { background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; }
-    .setting-section { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-line); }
-    .setting-section h4 { font-size: 0.9rem; margin-bottom: 10px; color: var(--primary); }
+    .tx-amount.income { color: var(--primary); font-weight: 700; }
+    .tx-amount.expense { color: var(--danger); font-weight: 700; }
   </style>
 </head>
 <body>
 
-  <!-- Landing Screen -->
-  <div id="landingScreen" class="container">
-    <div class="hero-section">
-      <span class="hero-badge"><i class="fa-solid fa-shield-halved"></i> آمن وتطبيق شخصي متكامل</span>
-      <h1 class="hero-title">إدارة أموالك بسهولة وذكاء</h1>
-      <p class="hero-subtitle">سجل دخولك أو ابدأ مجاناً بتتبع مصاريفك، مدخراتك وميزانيتك الخاصة بخصوصية كاملة.</p>
+  <div class="container">
+
+    <!-- 1. شاشة الدخول -->
+    <div id="authScreen" class="card auth-box">
+      <h2>محفظتي الذكية</h2>
+      <p>تطبيق بسيط ومباشر لإدارة مصاريفك اليومية</p>
+      <button id="loginGoogleBtn" class="btn btn-primary" style="margin-bottom: 10px;">تسجيل الدخول بـ Google</button>
+      <button id="loginGuestBtn" class="btn btn-secondary">دخول سريع بدون حساب</button>
+    </div>
+
+    <!-- 2. واجهة التطبيق الرئيسية -->
+    <div id="appScreen" style="display: none;">
       
-      <div class="auth-actions">
-        <button class="btn-main btn-primary" id="loginBtn">
-          <i class="fa-brands fa-google"></i> تسجيل الدخول بحساب Google
-        </button>
-        <button class="btn-main btn-secondary" id="guestBtn">
-          <i class="fa-solid fa-user-ninja"></i> استخدام التطبيق بدون حساب
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- App Dashboard -->
-  <div id="appScreen" class="container" style="display: none;">
-    <header class="glass">
-      <div class="brand">
-        <i class="fa-solid fa-wallet"></i>
-        <span>محفظتي الذكية</span>
-      </div>
-      <div class="top-controls">
-        <button class="control-btn" id="openSettingsBtn">
-          <i class="fa-solid fa-gear"></i> الإعدادات
-        </button>
-
-        <div id="userProfile" style="display: flex; align-items: center; gap: 8px;">
-          <img id="userImg" class="user-avatar" src="" alt="المستخدم" style="display:none;">
-          <button class="control-btn" id="logoutBtn" style="color:var(--danger);"><i class="fa-solid fa-right-from-bracket"></i></button>
+      <!-- الهيدر والحساب -->
+      <header class="card">
+        <div class="user-info">
+          <img id="userImg" class="user-avatar" src="" style="display: none;">
+          <span id="userName" style="font-weight: 700; font-size: 0.9rem;">زائر</span>
         </div>
-      </div>
-    </header>
+        <button id="logoutBtn" class="btn btn-danger">خروج</button>
+      </header>
 
-    <div class="dashboard-grid">
-      <div class="card glass income">
-        <h4>إجمالي الدخل</h4>
-        <div class="amount" id="incomeVal">0</div>
-      </div>
-      <div class="card glass expense">
-        <h4>إجمالي المصاريف</h4>
-        <div class="amount" id="expenseVal">0</div>
-      </div>
-      <div class="card glass savings">
-        <h4>المتبقي / المدخرات</h4>
-        <div class="amount" id="savingsVal">0</div>
-      </div>
-    </div>
-
-    <div class="goals-grid">
-      <div class="budget-section glass">
-        <div class="budget-header">
-          <span>الميزانية الشهرية: <strong id="budgetTarget">غير محددة</strong></span>
-          <button class="control-btn" id="btnEditBudget" style="padding: 2px 8px;"><i class="fa-solid fa-pen"></i></button>
+      <!-- ملخص الحساب -->
+      <div class="card summary-grid">
+        <div class="summary-item">
+          <h5>إجمالي الدخل</h5>
+          <div id="totalIncome" style="color: var(--primary);">0</div>
         </div>
-        <div class="progress-bar">
-          <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+        <div class="summary-item">
+          <h5>إجمالي المصاريف</h5>
+          <div id="totalExpense" style="color: var(--danger);">0</div>
+        </div>
+        <div class="summary-item">
+          <h5>المتبقي</h5>
+          <div id="totalBalance">0</div>
         </div>
       </div>
 
-      <div class="savings-goal-box glass">
-        <div class="budget-header">
-          <span>هدف الادخار: <strong id="goalTarget">غير محدد</strong></span>
-          <button class="control-btn" id="btnEditGoal" style="padding: 2px 8px;"><i class="fa-solid fa-pen"></i></button>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" id="goalFill" style="width: 0%; background: var(--accent);"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="main-grid">
-      <div class="form-box glass">
-        <h3><i class="fa-solid fa-plus-circle" style="color:var(--primary);"></i> إضافة معاملة جديدة</h3>
+      <!-- نموذج إضافة معاملة -->
+      <div class="card">
+        <h4 style="margin-bottom: 12px; font-size: 0.95rem;">إضافة معاملة جديدة</h4>
         <form id="txForm">
-          <div class="form-row">
-            <div class="input-group">
-              <label>نوع المعاملة</label>
-              <select id="type">
-                <option value="expense">مصروف (-)</option>
-                <option value="income">دخل (+)</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <label>التصنيف</label>
-              <select id="category">
-                <option value="طعام">طعام ومشروبات</option>
-                <option value="سكن">سكن وفواتير</option>
-                <option value="مواصلات">مواصلات ونقل</option>
-                <option value="تعليم">تعليم ودورات</option>
-                <option value="ترفيه">ترفيه وتسوق</option>
-                <option value="راتب">راتب / عمل حر</option>
-                <option value="أخرى">أخرى</option>
-              </select>
-            </div>
+          <div class="form-group">
+            <label>النوع</label>
+            <select id="txType">
+              <option value="expense">مصروف (-)</option>
+              <option value="income">دخل (+)</option>
+            </select>
           </div>
-
-          <div class="form-row">
-            <div class="input-group">
-              <label>المبلغ</label>
-              <input type="number" id="amount" placeholder="0.00" required step="any" min="0.01">
-            </div>
-            <div class="input-group">
-              <label>العملة</label>
-              <select id="txCurrency"></select>
-            </div>
+          <div class="form-group">
+            <label>المبلغ</label>
+            <input type="number" id="txAmount" placeholder="0.00" step="any" required>
           </div>
-
-          <div class="input-group">
+          <div class="form-group">
             <label>الوصف</label>
-            <input type="text" id="description" placeholder="وصف المعاملة..." required>
+            <input type="text" id="txDesc" placeholder="مثال: غداء، كروت، راتب..." required>
           </div>
-
-          <button type="submit" class="btn" id="btnSaveTx"><i class="fa-solid fa-check"></i> حفظ المعاملة</button>
+          <button type="submit" class="btn btn-primary">حفظ المعاملة</button>
         </form>
       </div>
 
-      <div class="chart-box glass">
-        <h3><i class="fa-solid fa-chart-pie" style="color:var(--accent);"></i> توزيع المصاريف</h3>
-        <div class="chart-container">
-          <canvas id="expenseChart"></canvas>
-        </div>
+      <!-- سجل المعاملات -->
+      <div class="card">
+        <h4 style="margin-bottom: 10px; font-size: 0.95rem;">السجل اليومي</h4>
+        <ul id="txList" class="tx-list"></ul>
       </div>
+
     </div>
 
-    <div class="transactions-box glass">
-      <div class="tx-header-actions">
-        <h3><i class="fa-solid fa-list-check" style="color:var(--primary);"></i> سجل المعاملات</h3>
-        <div style="display:flex; gap:8px;">
-          <input type="text" id="searchInput" class="search-input" placeholder="بحث...">
-          <button class="control-btn" id="exportBtn"><i class="fa-solid fa-file-excel"></i> تصدير Excel</button>
-        </div>
-      </div>
-      <ul class="tx-list" id="txList"></ul>
-    </div>
   </div>
 
-  <!-- Settings Modal Window -->
-  <div class="modal-overlay" id="settingsModal">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3><i class="fa-solid fa-gear" style="color:var(--primary);"></i> إعدادات التطبيق الحسابية</h3>
-        <button class="close-modal" id="closeSettingsBtn"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-
-      <div class="setting-section">
-        <h4>تخصيص المظهر</h4>
-        <button class="control-btn" id="themeToggleBtn" style="width: 100%; justify-content: center; padding: 10px;">
-          <i class="fa-solid fa-moon"></i> التبديل بين الوضع الليلي / النهار
-        </button>
-      </div>
-
-      <div class="setting-section">
-        <h4>العملة الرئيسية للواجهة والعرض</h4>
-        <select id="defaultCurrencySelect"></select>
-      </div>
-
-      <div class="setting-section">
-        <h4>إضافة / تعديل العملات المتاحة</h4>
-        <div class="input-group">
-          <label>اسم العملة (مثال: ريال يمني):</label>
-          <input type="text" id="newCurrName" placeholder="اسم العملة">
-        </div>
-        <div class="form-row">
-          <div class="input-group">
-            <label>رمز العملة (مثال: ر.ي):</label>
-            <input type="text" id="newCurrSymbol" placeholder="ر.ي">
-          </div>
-          <div class="input-group">
-            <label>سعر الصرف مقابل ($):</label>
-            <input type="number" id="newCurrRate" placeholder="1.00" step="any">
-          </div>
-        </div>
-        <button class="btn" id="addNewCurrencyBtn" style="background:var(--accent); margin-bottom:15px;">إضافة العملة للقائمة</button>
-      </div>
-
-      <button class="btn" id="saveSettingsBtn">حفظ وإغلاق الإعدادات</button>
-    </div>
-  </div>
-
+  <!-- المحرك الأساسي وقاعدة البيانات -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -366,363 +169,161 @@
     let currentUser = null;
     let isGuest = false;
     let transactions = [];
-    let monthlyBudget = 0;
-    let savingsGoal = 0;
-    let defaultCurrency = "YER";
-    let currentTheme = "dark";
-    let myChart = null;
 
-    // قائمة العملات المتاحة بدقة وحصرياً بدون تقسيمات
-    let currencies = {
-      "YER": { name: "ريال يمني", symbol: "ر.ي", rate: 530 },
-      "SAR": { name: "ريال سعودي", symbol: "ر.س", rate: 3.75 },
-      "USD": { name: "دولار أمريكي", symbol: "$", rate: 1 }
-    };
+    // عناصر الواجهة
+    const authScreen = document.getElementById('authScreen');
+    const appScreen = document.getElementById('appScreen');
+    const txForm = document.getElementById('txForm');
+    const txList = document.getElementById('txList');
 
-    function escapeHTML(str) {
-      return String(str).replace(/[&<>"']/g, function (m) {
-        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
-      });
-    }
-
-    // Modal Control
-    document.getElementById('openSettingsBtn').addEventListener('click', () => {
-      populateCurrencyDropdowns();
-      document.getElementById('defaultCurrencySelect').value = defaultCurrency;
-      document.getElementById('settingsModal').style.display = 'flex';
-    });
-    document.getElementById('closeSettingsBtn').addEventListener('click', () => {
-      document.getElementById('settingsModal').style.display = 'none';
-    });
-
-    document.getElementById('addNewCurrencyBtn').addEventListener('click', () => {
-      const name = document.getElementById('newCurrName').value.trim();
-      const symbol = document.getElementById('newCurrSymbol').value.trim();
-      const rate = parseFloat(document.getElementById('newCurrRate').value);
-          if (!name || !symbol || isNaN(rate) || rate <= 0) {
-        alert("الرجاء إدخال بيانات عملة صحيحة");
-        return;
-      }
-
-      const code = name.toUpperCase().slice(0, 4) + "_" + Date.now().toString().slice(-3);
-      currencies[code] = { name, symbol, rate };
-      
-      document.getElementById('newCurrName').value = '';
-      document.getElementById('newCurrSymbol').value = '';
-      document.getElementById('newCurrRate').value = '';
-      
-      populateCurrencyDropdowns();
-      alert("تمت إضافة العملة بنجاح!");
-    });
-
-    document.getElementById('saveSettingsBtn').addEventListener('click', () => {
-      defaultCurrency = document.getElementById('defaultCurrencySelect').value;
-      document.getElementById('settingsModal').style.display = 'none';
-      syncData();
-    });
-
-    document.getElementById('themeToggleBtn').addEventListener('click', () => {
-      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', currentTheme);
-    });
-    // Auth events
-    document.getElementById('loginBtn').addEventListener('click', () => {
+    // تسجيل الدخول بـ Google
+    document.getElementById('loginGoogleBtn').addEventListener('click', () => {
       const provider = new GoogleAuthProvider();
-      signInWithPopup(auth, provider).catch(err => alert("خطأ في تسجيل الدخول: " + err.message));
+      signInWithPopup(auth, provider).catch(err => alert("خطأ بالدخول: " + err.message));
     });
 
-    document.getElementById('guestBtn').addEventListener('click', () => {
-      isGuest = true; currentUser = null; loadGuestData(); showDashboard();
+    // الدخول كزائر
+    document.getElementById('loginGuestBtn').addEventListener('click', () => {
+      isGuest = true;
+      currentUser = null;
+      document.getElementById('userName').textContent = 'حساب زائر';
+      document.getElementById('userImg').style.display = 'none';
+      loadGuestData();
+      showApp();
     });
 
+    // تسجيل الخروج
     document.getElementById('logoutBtn').addEventListener('click', () => {
-      if (isGuest) { isGuest = false; showLanding(); } else { signOut(auth); }
+      if (isGuest) {
+        isGuest = false;
+        showAuth();
+      } else {
+        signOut(auth);
+      }
     });
 
-    document.getElementById('btnEditBudget').addEventListener('click', setBudget);
-    document.getElementById('btnEditGoal').addEventListener('click', setSavingsGoal);
-    document.getElementById('exportBtn').addEventListener('click', exportToCSV);
-    document.getElementById('searchInput').addEventListener('input', renderList);
-
+    // مراقبة حالة الحساب
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        currentUser = user; isGuest = false; showDashboard();
-        document.getElementById('userImg').src = user.photoURL || '';
-        document.getElementById('userImg').style.display = 'inline-block';
+        currentUser = user;
+        isGuest = false;
+        document.getElementById('userName').textContent = user.displayName || 'مستخدم';
+        if (user.photoURL) {
+          document.getElementById('userImg').src = user.photoURL;
+          document.getElementById('userImg').style.display = 'block';
+        }
         listenToUserData();
+        showApp();
       } else if (!isGuest) {
-        showLanding();
+        showAuth();
       }
     });
 
-    function showDashboard() {
-      document.getElementById('landingScreen').style.display = 'none';
-      document.getElementById('appScreen').style.display = 'block';
-      populateCurrencyDropdowns();
-      initChart();
-      updateApp();
+    function showApp() {
+      authScreen.style.display = 'none';
+      appScreen.style.display = 'block';
     }
 
-    function showLanding() {
-      document.getElementById('landingScreen').style.display = 'block';
-      document.getElementById('appScreen').style.display = 'none';
+    function showAuth() {
+      authScreen.style.display = 'block';
+      appScreen.style.display = 'none';
     }
 
-    function populateCurrencyDropdowns() {
-      const txSelect = document.getElementById('txCurrency');
-      const defSelect = document.getElementById('defaultCurrencySelect');
-      
-      txSelect.innerHTML = '';
-      defSelect.innerHTML = '';
-
-      Object.keys(currencies).forEach(code => {
-        const c = currencies[code];
-        const opt1 = document.createElement('option');
-        opt1.value = code; opt1.textContent = `${c.name} (${c.symbol})`;
-        txSelect.appendChild(opt1);
-
-        const opt2 = document.createElement('option');
-        opt2.value = code; opt2.textContent = `${c.name} (${c.symbol})`;
-        defSelect.appendChild(opt2);
-      });
-    }
-
+    // جلب بيانات المستخدم من السحابة (Firestore)
     function listenToUserData() {
       if (!currentUser) return;
-      const userDocRef = doc(db, "users", currentUser.uid);
-      onSnapshot(userDocRef, (docSnap) => {
+      const userRef = doc(db, "users", currentUser.uid);
+      onSnapshot(userRef, (docSnap) => {
         if (docSnap.exists()) {
-          const data = docSnap.data();
-          transactions = data.transactions || [];
-          monthlyBudget = data.monthlyBudget || 0;
-          savingsGoal = data.savingsGoal || 0;
-          defaultCurrency = data.defaultCurrency || "YER";
-          if (data.currencies) currencies = data.currencies;
-          populateCurrencyDropdowns();
+          transactions = docSnap.data().transactions || [];
         } else {
-          // حساب جديد نقي وصافي
-          transactions = []; monthlyBudget = 0; savingsGoal = 0;
+          transactions = [];
           syncData();
         }
-        updateApp();
+        updateUI();
       });
     }
 
+    // جلب بيانات الزائر من ذاكرة الهاتف LocalStorage
     function loadGuestData() {
-      try {
-        transactions = JSON.parse(localStorage.getItem('w_tx') || '[]');
-        monthlyBudget = parseFloat(localStorage.getItem('w_budget') || '0');
-        savingsGoal = parseFloat(localStorage.getItem('w_goal') || '0');
-        defaultCurrency = localStorage.getItem('w_curr') || 'YER';
-        const savedCurrs = localStorage.getItem('w_currencies');
-        if (savedCurrs) currencies = JSON.parse(savedCurrs);
-        populateCurrencyDropdowns();
-      } catch (e) { console.error("Error reading local storage", e); }
-      updateApp();
+      transactions = JSON.parse(localStorage.getItem('simple_wallet_tx') || '[]');
+      updateUI();
     }
 
+    // حفظ البيانات
     async function syncData() {
       if (currentUser) {
-        try {
-          const userDocRef = doc(db, "users", currentUser.uid);
-          await setDoc(userDocRef, { transactions, monthlyBudget, savingsGoal, defaultCurrency, currencies }, { merge: true });
-        } catch(e) { console.error("Cloud Sync Error", e); }
+        await setDoc(doc(db, "users", currentUser.uid), { transactions }, { merge: true });
       } else if (isGuest) {
-        localStorage.setItem('w_tx', JSON.stringify(transactions));
-        localStorage.setItem('w_budget', monthlyBudget.toString());
-        localStorage.setItem('w_goal', savingsGoal.toString());
-        localStorage.setItem('w_curr', defaultCurrency);
-        localStorage.setItem('w_currencies', JSON.stringify(currencies));
+        localStorage.setItem('simple_wallet_tx', JSON.stringify(transactions));
       }
-      updateApp();
+      updateUI();
     }
 
-    function convertToUSD(amount, currCode) { 
-      const rate = currencies[currCode] ? currencies[currCode].rate : 1;
-      return amount / rate; 
-    }
-    
-    function convertFromUSD(amountUSD, targetCurrCode) { 
-      const rate = currencies[targetCurrCode] ? currencies[targetCurrCode].rate : 1;
-      return amountUSD * rate; 
-    }
-
-    document.getElementById('txForm').addEventListener('submit', (e) => {
+    // إضافة معاملة جديدة
+    txForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const type = document.getElementById('type').value;
-      const category = document.getElementById('category').value;
-      const amount = parseFloat(document.getElementById('amount').value);
-      const txCurr = document.getElementById('txCurrency').value;
-      const rawDesc = document.getElementById('description').value.trim();
+      const type = document.getElementById('txType').value;
+      const amount = parseFloat(document.getElementById('txAmount').value);
+      const desc = document.getElementById('txDesc').value.trim();
 
-      if (!amount || amount <= 0 || isNaN(amount)) return;
-
-      const amountUSD = convertToUSD(amount, txCurr);
+      if (!amount || amount <= 0) return;
 
       transactions.push({
         id: Date.now(),
-        type, category,
-        originalAmount: amount,
-        originalCurrency: txCurr,
-        amountUSD,
-        description: rawDesc,
+        type,
+        amount,
+        desc,
         date: new Date().toLocaleDateString('ar-YE')
       });
 
       syncData();
-      document.getElementById('txForm').reset();
+      txForm.reset();
     });
 
-    function updateApp() {
-      const activeCurrObj = currencies[defaultCurrency] || { symbol: 'ر.ي', rate: 1 };
-      const currSymbol = activeCurrObj.symbol;
+    // تحديث الواجهة وحساب المجاميع
+    function updateUI() {
+      let income = 0;
+      let expense = 0;
 
-      const incomeUSD = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + (t.amountUSD || 0), 0);
-      const expenseUSD = transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + (t.amountUSD || 0), 0);
-      const savingsUSD = incomeUSD - expenseUSD;
+      txList.innerHTML = '';
 
-      const income = convertFromUSD(incomeUSD, defaultCurrency);
-      const expense = convertFromUSD(expenseUSD, defaultCurrency);
-      const savings = convertFromUSD(savingsUSD, defaultCurrency);
-      const budget = convertFromUSD(monthlyBudget, defaultCurrency);
-      const goal = convertFromUSD(savingsGoal, defaultCurrency);
-
-      document.getElementById('incomeVal').textContent = `${income.toLocaleString(undefined, {maximumFractionDigits: 2})} ${currSymbol}`;
-      document.getElementById('expenseVal').textContent = `${expense.toLocaleString(undefined, {maximumFractionDigits: 2})} ${currSymbol}`;
-      document.getElementById('savingsVal').textContent = `${savings.toLocaleString(undefined, {maximumFractionDigits: 2})} ${currSymbol}`;
-      
-      document.getElementById('budgetTarget').textContent = budget > 0 ? `${budget.toLocaleString(undefined, {maximumFractionDigits: 2})} ${currSymbol}` : 'غير محددة';
-      document.getElementById('goalTarget').textContent = goal > 0 ? `${goal.toLocaleString(undefined, {maximumFractionDigits: 2})} ${currSymbol}` : 'غير محدد';
-
-      const budgetPercent = budget > 0 ? (expense / budget) * 100 : 0;
-      document.getElementById('progressFill').style.width = `${Math.min(budgetPercent, 100)}%`;
-
-      const goalPercent = goal > 0 ? (savings / goal) * 100 : 0;
-      document.getElementById('goalFill').style.width = `${Math.min(Math.max(goalPercent, 0), 100)}%`;
-
-      renderList();
-      updateChart();
-    }
-
-    function renderList() {
-      const listEl = document.getElementById('txList');
-      const search = document.getElementById('searchInput').value.toLowerCase();
-      listEl.innerHTML = '';
-
-      const filtered = transactions.filter(t => 
-        (t.description && t.description.toLowerCase().includes(search)) || 
-        (t.category && t.category.includes(search))
-      );
-
-      if (filtered.length === 0) {
-        listEl.innerHTML = `<li style="text-align:center; color:var(--text-muted); padding:20px;">لا يوجد سجلات حتى الآن</li>`;
-        return;
+      if (transactions.length === 0) {
+        txList.innerHTML = `<li style="text-align:center; color:var(--text-muted); padding:15px; font-size:0.85rem;">لا توجد معاملات مسجلة حتى الآن</li>`;
       }
 
-      filtered.slice().reverse().forEach(t => {
-        const item = document.createElement('li');
-        item.className = 'tx-item';
-        const isIncome = t.type === 'income';
+      transactions.slice().reverse().forEach(t => {
+        if (t.type === 'income') income += t.amount;
+        else expense += t.amount;
 
-        const currObj = currencies[t.originalCurrency] || currencies[defaultCurrency] || { symbol: 'ر.ي' };
-        const displayAmt = t.originalAmount;
-
-        item.innerHTML = `
-          <div class="tx-info">
-            <div class="tx-icon"><i class="fa-solid ${getCategoryIcon(t.category)}"></i></div>
-            <div class="tx-details">
-              <strong>${escapeHTML(t.description)}</strong>
-              <div style="font-size:0.72rem; color:var(--text-muted);">${escapeHTML(t.category)} • ${escapeHTML(t.date)}</div>
-            </div>
+        const li = document.createElement('li');
+        li.className = 'tx-item';
+        li.innerHTML = `
+          <div>
+            <strong style="display:block; font-size:0.88rem;">${escapeHTML(t.desc)}</strong>
+            <span style="font-size:0.75rem; color:var(--text-muted);">${t.date}</span>
           </div>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span class="tx-amount ${isIncome ? 'plus' : 'minus'}">
-              ${isIncome ? '+' : '-'}${displayAmt.toLocaleString()} ${escapeHTML(currObj.symbol)}
-            </span>
-            <button class="delete-btn" data-id="${t.id}"><i class="fa-solid fa-xmark"></i></button>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span class="tx-amount ${t.type}">${t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString()}</span>
+            <button onclick="deleteTx(${t.id})" style="background:none; border:none; color:var(--text-muted); cursor:pointer;">✕</button>
           </div>
         `;
-        listEl.appendChild(item);
+        txList.appendChild(li);
       });
 
-      listEl.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const id = Number(e.currentTarget.getAttribute('data-id'));
-          deleteTx(id);
-        });
-      });
+      document.getElementById('totalIncome').textContent = income.toLocaleString();
+      document.getElementById('totalExpense').textContent = expense.toLocaleString();
+      document.getElementById('totalBalance').textContent = (income - expense).toLocaleString();
     }
 
-    function deleteTx(id) {
+    // حذف معاملة
+    window.deleteTx = function(id) {
       transactions = transactions.filter(t => t.id !== id);
       syncData();
-    }
+    };
 
-    function exportToCSV() {
-      if (transactions.length === 0) return alert("لا يوجد بيانات للتصدير!");
-      let csv = "ID,Type,Category,Description,Amount,Currency,Date\n";
-      transactions.forEach(t => {
-        const cleanDesc = t.description ? t.description.replace(/"/g, '""') : '';
-        const currObj = currencies[t.originalCurrency] || { symbol: '' };
-        csv += `${t.id},${t.type},${t.category},"${cleanDesc}",${t.originalAmount},${currObj.symbol},${t.date}\n`;
-      });
-      const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = `SmartWallet_Export_${new Date().toISOString().slice(0,10)}.csv`;
-      link.click();
-    }
-
-    function getCategoryIcon(cat) {
-      switch (cat) {
-        case 'طعام': return 'fa-utensils';
-        case 'سكن': return 'fa-house';
-        case 'مواصلات': return 'fa-bus';
-        case 'تعليم': return 'fa-graduation-cap';
-        case 'ترفيه': return 'fa-gamepad';
-        case 'راتب': return 'fa-money-bill-wave';
-        default: return 'fa-tag';
-      }
-    }
-
-    function initChart() {
-      const ctx = document.getElementById('expenseChart').getContext('2d');
-      if (myChart) myChart.destroy();
-      myChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: { labels: [], datasets: [{ data: [], backgroundColor: ['#ef4444', '#3b82f6', '#f59e0b', '#10b981', '#8b5cf6', '#ec4899', '#64748b'] }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { family: 'Cairo', size: 10 } } } } }
-      });
-    }
-
-    function updateChart() {
-      if (!myChart) return;
-      const categories = {};
-      transactions.filter(t => t.type === 'expense').forEach(t => {
-        const val = convertFromUSD(t.amountUSD, defaultCurrency);
-        categories[t.category] = (categories[t.category] || 0) + val;
-      });
-      myChart.data.labels = Object.keys(categories);
-      myChart.data.datasets[0].data = Object.values(categories);
-      myChart.update();
-    }
-
-    function setBudget() {
-      const currentVal = convertFromUSD(monthlyBudget, defaultCurrency);
-      const val = prompt("أدخل قيمة الميزانية الشهرية الجديدة:", currentVal > 0 ? currentVal : '');
-      if (val !== null && !isNaN(parseFloat(val)) && parseFloat(val) >= 0) {
-        monthlyBudget = convertToUSD(parseFloat(val), defaultCurrency);
-        syncData();
-      }
-    }
-
-    function setSavingsGoal() {
-      const currentVal = convertFromUSD(savingsGoal, defaultCurrency);
-      const val = prompt("أدخل قيمة هدف الادخار الجديد:", currentVal > 0 ? currentVal : '');
-      if (val !== null && !isNaN(parseFloat(val)) && parseFloat(val) >= 0) {
-        savingsGoal = convertToUSD(parseFloat(val), defaultCurrency);
-        syncData();
-      }
+    function escapeHTML(str) {
+      return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
     }
   </script>
 </body>
