@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>محفظتي</title>
+  <title>محفظتي الذكية</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
@@ -15,29 +15,16 @@
       --border: #334155;
       --primary: #10b981;
       --danger: #ef4444;
+      --accent: #3b82f6;
       --text: #f8fafc;
       --text-muted: #94a3b8;
     }
 
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
-      font-family: 'Cairo', sans-serif; 
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 15px 10px; }
+    .container { max-width: 600px; margin: auto; }
 
-    body { 
-      background: var(--bg); 
-      color: var(--text); 
-      padding: 20px 10px; 
-    }
-
-    .container { 
-      max-width: 600px; 
-      margin: auto; 
-    }
-
-    /* البطاقات التصميمية */
+    /* Cards & Glass Style */
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -46,140 +33,62 @@
       margin-bottom: 15px;
     }
 
-    /* شاشة تسجيل الدخول */
-    .auth-box { 
-      text-align: center; 
-      padding: 40px 20px; 
-    }
-    .auth-box h2 { 
-      margin-bottom: 10px; 
-    }
-    .auth-box p { 
-      color: var(--text-muted); 
-      margin-bottom: 25px; 
-      font-size: 0.9rem; 
-    }
+    /* Auth Screen */
+    .auth-box { text-align: center; padding: 40px 20px; }
+    .auth-box h2 { margin-bottom: 10px; }
+    .auth-box p { color: var(--text-muted); margin-bottom: 25px; font-size: 0.9rem; }
 
-    /* الهيدر والمستخدم */
-    header { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-    }
-    .user-info { 
-      display: flex; 
-      align-items: center; 
-      gap: 10px; 
-    }
-    .user-avatar { 
-      width: 38px; 
-      height: 38px; 
-      border-radius: 50%; 
-      border: 1px solid var(--primary); 
-      object-fit: cover;
-    }
+    /* Header */
+    header { display: flex; justify-content: space-between; align-items: center; }
+    .user-info { display: flex; align-items: center; gap: 10px; }
+    .user-avatar { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--primary); object-fit: cover; }
 
-    /* الأزرار والحقول */
+    /* Form Controls */
     .btn {
-      width: 100%; 
-      padding: 12px; 
-      border-radius: 10px; 
-      border: none;
-      font-weight: 700; 
-      cursor: pointer; 
-      font-size: 0.95rem; 
-      margin-top: 5px;
+      width: 100%; padding: 12px; border-radius: 10px; border: none;
+      font-weight: 700; cursor: pointer; font-size: 0.95rem; margin-top: 5px;
+      transition: opacity 0.2s;
     }
-    .btn-primary { 
-      background: var(--primary); 
-      color: #fff; 
-    }
-    .btn-secondary { 
-      background: transparent; 
-      color: var(--text); 
-      border: 1px solid var(--border); 
-    }
-    .btn-danger { 
-      background: rgba(239, 68, 68, 0.2); 
-      color: var(--danger); 
-      border: 1px solid var(--danger); 
-      width: auto; 
-      padding: 6px 14px; 
-      font-size: 0.85rem; 
-      border-radius: 8px;
-    }
+    .btn:hover { opacity: 0.9; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); width: auto; padding: 6px 12px; font-size: 0.85rem; border-radius: 8px; }
 
-    .form-group { 
-      margin-bottom: 12px; 
-    }
-    .form-group label { 
-      display: block; 
-      font-size: 0.8rem; 
-      color: var(--text-muted); 
-      margin-bottom: 4px; 
-    }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
     input, select {
-      width: 100%; 
-      padding: 10px 12px; 
-      border-radius: 8px; 
-      border: 1px solid var(--border);
-      background: #0f172a; 
-      color: var(--text); 
-      outline: none; 
-      font-size: 0.9rem;
+      width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border);
+      background: #0f172a; color: var(--text); outline: none; font-size: 0.9rem;
     }
 
-    /* بطاقات الملخص */
-    .summary-grid { 
-      display: grid; 
-      grid-template-columns: repeat(3, 1fr); 
-      gap: 10px; 
-      text-align: center; 
-    }
-    .summary-item h5 { 
-      color: var(--text-muted); 
-      font-size: 0.75rem; 
-      margin-bottom: 4px; 
-    }
-    .summary-item div { 
-      font-weight: 700; 
-      font-size: 1rem; 
-    }
+    /* Dashboard Summary */
+    .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; }
+    .summary-item h5 { color: var(--text-muted); font-size: 0.75rem; margin-bottom: 4px; }
+    .summary-item div { font-weight: 700; font-size: 0.95rem; }
 
-    /* قائمة السجل */
-    .tx-list { 
-      list-style: none; 
-      margin-top: 5px; 
+    /* Wallets Horizontal Scroll */
+    .wallets-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px; }
+    .wallet-card {
+      min-width: 140px; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      padding: 12px; border-radius: 12px; flex-shrink: 0; position: relative;
     }
-    .tx-item {
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center;
-      padding: 12px 0; 
-      border-bottom: 1px solid var(--border);
-    }
-    .tx-item:last-child { 
-      border-bottom: none; 
-    }
-    .tx-amount.income { 
-      color: var(--primary); 
-      font-weight: 700; 
-    }
-    .tx-amount.expense { 
-      color: var(--danger); 
-      font-weight: 700; 
-    }
-    .delete-btn {
-      background: none; 
-      border: none; 
-      color: var(--text-muted); 
-      cursor: pointer;
-      font-size: 1rem;
-      padding: 0 5px;
-    }
-    .delete-btn:hover {
-      color: var(--danger);
-    }
+    .wallet-card h6 { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
+    .wallet-card div { font-weight: 700; font-size: 1rem; color: var(--primary); }
+
+    /* Tabs Layout */
+    .tabs { display: flex; gap: 8px; margin-bottom: 15px; }
+    .tab-btn { flex: 1; padding: 10px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text-muted); border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+    .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    /* Transactions List */
+    .tx-list { list-style: none; margin-top: 5px; }
+    .tx-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .tx-item:last-child { border-bottom: none; }
+    .tx-amount.income { color: var(--primary); font-weight: 700; }
+    .tx-amount.expense { color: var(--danger); font-weight: 700; }
+    .tx-amount.transfer { color: var(--accent); font-weight: 700; }
+    .delete-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.9rem; }
   </style>
 </head>
 <body>
@@ -189,7 +98,7 @@
     <!-- 1. شاشة تسجيل الدخول -->
     <div id="authScreen" class="card auth-box">
       <h2>محفظتي الذكية</h2>
-      <p>تطبيق بسيط ومباشر لإدارة مصاريفك اليومية</p>
+      <p>إدارة المحافظ والتحويلات المالية بكل سهولة</p>
       <button id="loginGoogleBtn" class="btn btn-primary" style="margin-bottom: 10px;">تسجيل الدخول بـ Google</button>
       <button id="loginGuestBtn" class="btn btn-secondary">دخول سريع بدون حساب</button>
     </div>
@@ -197,7 +106,7 @@
     <!-- 2. واجهة التطبيق الرئيسية -->
     <div id="appScreen" style="display: none;">
       
-      <!-- الهيدر والحساب -->
+      <!-- الهيدر -->
       <header class="card">
         <div class="user-info">
           <img id="userImg" class="user-avatar" src="" style="display: none;">
@@ -206,7 +115,7 @@
         <button id="logoutBtn" class="btn btn-danger">خروج</button>
       </header>
 
-      <!-- ملخص الحساب -->
+      <!-- ملخص الحساب والإجمالي العام -->
       <div class="card summary-grid">
         <div class="summary-item">
           <h5>إجمالي الدخل</h5>
@@ -217,15 +126,36 @@
           <div id="totalExpense" style="color: var(--danger);">0</div>
         </div>
         <div class="summary-item">
-          <h5>المتبقي</h5>
+          <h5>رصيد كل المحافظ</h5>
           <div id="totalBalance">0</div>
         </div>
       </div>
 
-      <!-- نموذج إضافة معاملة -->
+      <!-- قسم المحافظ -->
       <div class="card">
-        <h4 style="margin-bottom: 12px; font-size: 0.95rem;">إضافة معاملة جديدة</h4>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <h4 style="font-size: 0.95rem;">المحافظ المالية</h4>
+          <button onclick="toggleModal('walletModal')" style="background: none; border: none; color: var(--primary); cursor: pointer; font-weight: 700; font-size: 0.85rem;">+ إضافة محفظة</button>
+        </div>
+        <div id="walletsContainer" class="wallets-scroll">
+          <!-- تُعرض المحافظ هنا -->
+        </div>
+      </div>
+
+      <!-- تبويب الأفعال (إضافة معاملة / مناقلة بين المحافظ) -->
+      <div class="tabs">
+        <button id="tabTxBtn" class="tab-btn active" onclick="switchTab('tx')">إضافة معاملة</button>
+        <button id="tabTransferBtn" class="tab-btn" onclick="switchTab('transfer')">تحويل بين المحافظ</button>
+      </div>
+
+      <!-- نموذج إضافة معاملة -->
+      <div id="txFormCard" class="card">
+        <h4 style="margin-bottom: 12px; font-size: 0.95rem;">إضافة (دخل / مصروف)</h4>
         <form id="txForm">
+          <div class="form-group">
+            <label>المحفظة</label>
+            <select id="txWalletSelect" required></select>
+          </div>
           <div class="form-group">
             <label>النوع</label>
             <select id="txType">
@@ -239,9 +169,33 @@
           </div>
           <div class="form-group">
             <label>الوصف</label>
-            <input type="text" id="txDesc" placeholder="مثال: غداء، كروت، راتب..." required>
+            <input type="text" id="txDesc" placeholder="مثال: تسوق، راتب، غداء..." required>
           </div>
           <button type="submit" class="btn btn-primary">حفظ المعاملة</button>
+        </form>
+      </div>
+
+      <!-- نموذج التحويل / المناقلة -->
+      <div id="transferFormCard" class="card" style="display: none;">
+        <h4 style="margin-bottom: 12px; font-size: 0.95rem;">تحويل مالي بين المحافظ</h4>
+        <form id="transferForm">
+          <div class="form-group">
+            <label>من محفظة (المصدر)</label>
+            <select id="fromWalletSelect" required></select>
+          </div>
+          <div class="form-group">
+            <label>إلى محفظة (الهدف)</label>
+            <select id="toWalletSelect" required></select>
+          </div>
+          <div class="form-group">
+            <label>المبلغ المراد تحويله</label>
+            <input type="number" id="transferAmount" placeholder="0.00" step="any" required>
+          </div>
+          <div class="form-group">
+            <label>ملاحظة / وصف</label>
+            <input type="text" id="transferDesc" placeholder="مثال: تغذية حساب الكريمي، سحب كاش...">
+          </div>
+          <button type="submit" class="btn btn-accent">تأفيذ التحويل</button>
         </form>
       </div>
 
@@ -253,9 +207,28 @@
 
     </div>
 
+    <!-- نافذة إضافة محفظة جديدة (Modal) -->
+    <div id="walletModal" class="card" style="display: none; position: fixed; top: 20%; left: 5%; right: 5%; z-index: 100; border: 2px solid var(--primary);">
+      <h4 style="margin-bottom: 12px;">إضافة محفظة جديدة</h4>
+      <form id="walletForm">
+        <div class="form-group">
+          <label>اسم المحفظة</label>
+          <input type="text" id="walletName" placeholder="مثال: جيب، بنك الكريمي، العمقي..." required>
+        </div>
+        <div class="form-group">
+          <label>الرصيد الافتتاحي</label>
+          <input type="number" id="walletBalance" placeholder="0.00" step="any" required>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button type="submit" class="btn btn-primary">إضافة</button>
+          <button type="button" onclick="toggleModal('walletModal')" class="btn btn-secondary">إلغاء</button>
+        </div>
+      </form>
+    </div>
+
   </div>
 
-  <!-- المحرك الأساسي وقاعدة البيانات -->
+  <!-- Firebase Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -276,21 +249,19 @@
 
     let currentUser = null;
     let isGuest = false;
+    let wallets = [];
     let transactions = [];
 
-    // عناصر الواجهة
+    // Elements
     const authScreen = document.getElementById('authScreen');
     const appScreen = document.getElementById('appScreen');
-    const txForm = document.getElementById('txForm');
-    const txList = document.getElementById('txList');
 
-    // تسجيل الدخول بـ Google
+    // Authentication
     document.getElementById('loginGoogleBtn').addEventListener('click', () => {
       const provider = new GoogleAuthProvider();
       signInWithPopup(auth, provider).catch(err => alert("خطأ بالدخول: " + err.message));
     });
 
-    // الدخول كزائر
     document.getElementById('loginGuestBtn').addEventListener('click', () => {
       isGuest = true;
       currentUser = null;
@@ -300,17 +271,11 @@
       showApp();
     });
 
-    // تسجيل الخروج
     document.getElementById('logoutBtn').addEventListener('click', () => {
-      if (isGuest) {
-        isGuest = false;
-        showAuth();
-      } else {
-        signOut(auth);
-      }
+      if (isGuest) { isGuest = false; showAuth(); } 
+      else { signOut(auth); }
     });
 
-    // مراقبة حالة الحساب
     onAuthStateChanged(auth, (user) => {
       if (user) {
         currentUser = user;
@@ -327,24 +292,20 @@
       }
     });
 
-    function showApp() {
-      authScreen.style.display = 'none';
-      appScreen.style.display = 'block';
-    }
+    function showApp() { authScreen.style.display = 'none'; appScreen.style.display = 'block'; }
+    function showAuth() { authScreen.style.display = 'block'; appScreen.style.display = 'none'; }
 
-    function showAuth() {
-      authScreen.style.display = 'block';
-      appScreen.style.display = 'none';
-    }
-
-    // جلب البيانات من Firestore
+    // Data Syncing
     function listenToUserData() {
       if (!currentUser) return;
       const userRef = doc(db, "users", currentUser.uid);
       onSnapshot(userRef, (docSnap) => {
         if (docSnap.exists()) {
-          transactions = docSnap.data().transactions || [];
+          const data = docSnap.data();
+          wallets = data.wallets || [{ id: 'default', name: 'الرئيسية', balance: 0 }];
+          transactions = data.transactions || [];
         } else {
+          wallets = [{ id: 'default', name: 'الرئيسية', balance: 0 }];
           transactions = [];
           syncData();
         }
@@ -352,33 +313,59 @@
       });
     }
 
-    // جلب بيانات الزائر من LocalStorage
     function loadGuestData() {
-      transactions = JSON.parse(localStorage.getItem('simple_wallet_tx') || '[]');
+      wallets = JSON.parse(localStorage.getItem('smart_wallet_wallets') || '[{"id":"default","name":"الرئيسية","balance":0}]');
+      transactions = JSON.parse(localStorage.getItem('smart_wallet_tx') || '[]');
       updateUI();
     }
 
-    // حفظ البيانات في السحابة أو الذاكرة المحلية
     async function syncData() {
       if (currentUser) {
-        await setDoc(doc(db, "users", currentUser.uid), { transactions }, { merge: true });
+        await setDoc(doc(db, "users", currentUser.uid), { wallets, transactions }, { merge: true });
       } else if (isGuest) {
-        localStorage.setItem('simple_wallet_tx', JSON.stringify(transactions));
+        localStorage.setItem('smart_wallet_wallets', JSON.stringify(wallets));
+        localStorage.setItem('smart_wallet_tx', JSON.stringify(transactions));
       }
       updateUI();
     }
 
-    // إضافة معاملة جديدة
-    txForm.addEventListener('submit', (e) => {
+    // Wallets Management
+    document.getElementById('walletForm').addEventListener('submit', (e) => {
       e.preventDefault();
+      const name = document.getElementById('walletName').value.trim();
+      const balance = Number(document.getElementById('walletBalance').value) || 0;
+
+      if (!name) return;
+
+      wallets.push({ id: 'w_' + Date.now(), name, balance });
+      syncData();
+      document.getElementById('walletForm').reset();
+      toggleModal('walletModal');
+    });
+
+    // Transactions Management
+    document.getElementById('txForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const walletId = document.getElementById('txWalletSelect').value;
       const type = document.getElementById('txType').value;
       const amount = Number(document.getElementById('txAmount').value);
       const desc = document.getElementById('txDesc').value.trim();
 
       if (!amount || amount <= 0 || !desc) return;
 
+      const wallet = wallets.find(w => w.id === walletId);
+      if (!wallet) return;
+
+      if (type === 'income') {
+        wallet.balance += amount;
+      } else {
+        wallet.balance -= amount;
+      }
+
       transactions.push({
         id: Date.now(),
+        walletId,
+        walletName: wallet.name,
         type,
         amount,
         desc,
@@ -386,37 +373,108 @@
       });
 
       syncData();
-      txForm.reset();
+      document.getElementById('txForm').reset();
     });
 
-    // تحديث الواجهة وحساب الحسابات العلوية
+    // Transfer Management
+    document.getElementById('transferForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fromId = document.getElementById('fromWalletSelect').value;
+      const toId = document.getElementById('toWalletSelect').value;
+      const amount = Number(document.getElementById('transferAmount').value);
+      const desc = document.getElementById('transferDesc').value.trim() || 'مناقلة مالية';
+
+      if (fromId === toId) {
+        alert('يرجى اختيار محفظتين مختلفين للتحويل');
+        return;
+      }
+
+      if (!amount || amount <= 0) return;
+
+      const fromWallet = wallets.find(w => w.id === fromId);
+      const toWallet = wallets.find(w => w.id === toId);
+
+      if (!fromWallet || !toWallet) return;
+
+      fromWallet.balance -= amount;
+      toWallet.balance += amount;
+
+      transactions.push({
+        id: Date.now(),
+        type: 'transfer',
+        amount,
+        desc: `${desc} (${fromWallet.name} ← ${toWallet.name})`,
+        date: new Date().toLocaleDateString('ar-YE')
+      });
+
+      syncData();
+      document.getElementById('transferForm').reset();
+    });
+
+    // Render UI
     function updateUI() {
+      renderWallets();
+      renderSelects();
+      renderListAndSummary();
+    }
+
+    function renderWallets() {
+      const container = document.getElementById('walletsContainer');
+      container.innerHTML = '';
+      wallets.forEach(w => {
+        const div = document.createElement('div');
+        div.className = 'wallet-card';
+        div.innerHTML = `
+          <h6>${escapeHTML(w.name)}</h6>
+          <div>${Number(w.balance).toLocaleString()}</div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function renderSelects() {
+      const txSelect = document.getElementById('txWalletSelect');
+      const fromSelect = document.getElementById('fromWalletSelect');
+      const toSelect = document.getElementById('toWalletSelect');
+
+      txSelect.innerHTML = '';
+      fromSelect.innerHTML = '';
+      toSelect.innerHTML = '';
+
+      wallets.forEach(w => {
+        const opt = `<option value="${w.id}">${escapeHTML(w.name)} (${Number(w.balance).toLocaleString()})</option>`;
+        txSelect.innerHTML += opt;
+        fromSelect.innerHTML += opt;
+        toSelect.innerHTML += opt;
+      });
+    }
+
+    function renderListAndSummary() {
       let income = 0;
       let expense = 0;
-
+      const txList = document.getElementById('txList');
       txList.innerHTML = '';
 
-      if (!transactions || transactions.length === 0) {
-        txList.innerHTML = `<li style="text-align:center; color:var(--text-muted); padding:15px; font-size:0.85rem;">لا توجد معاملات مسجلة حتى الآن</li>`;
+      if (transactions.length === 0) {
+        txList.innerHTML = `<li style="text-align:center; color:var(--text-muted); padding:15px; font-size:0.85rem;">لا توجد معاملات مسجلة</li>`;
       } else {
         transactions.slice().reverse().forEach(t => {
           const val = Number(t.amount) || 0;
-          
-          if (t.type === 'income') {
-            income += val;
-          } else {
-            expense += val;
-          }
+          if (t.type === 'income') income += val;
+          if (t.type === 'expense') expense += val;
+
+          let typeClass = t.type;
+          let sign = t.type === 'income' ? '+' : (t.type === 'expense' ? '-' : '⇄ ');
 
           const li = document.createElement('li');
           li.className = 'tx-item';
           li.innerHTML = `
             <div>
               <strong style="display:block; font-size:0.88rem;">${escapeHTML(t.desc)}</strong>
-              <span style="font-size:0.75rem; color:var(--text-muted);">${t.date || ''}</span>
+              <span style="font-size:0.75rem; color:var(--text-muted);">${t.date} ${t.walletName ? '• ' + escapeHTML(t.walletName) : ''}</span>
             </div>
             <div style="display:flex; align-items:center; gap:10px;">
-              <span class="tx-amount ${t.type}">${t.type === 'income' ? '+' : '-'}${val.toLocaleString()}</span>
+              <span class="tx-amount ${typeClass}">${sign}${val.toLocaleString()}</span>
               <button class="delete-btn" onclick="deleteTx(${t.id})">✕</button>
             </div>
           `;
@@ -424,21 +482,31 @@
         });
       }
 
-      // تحديث أرقام الكروت
+      const totalBalance = wallets.reduce((acc, w) => acc + (Number(w.balance) || 0), 0);
+
       document.getElementById('totalIncome').textContent = income.toLocaleString();
       document.getElementById('totalExpense').textContent = expense.toLocaleString();
-      document.getElementById('totalBalance').textContent = (income - expense).toLocaleString();
+      document.getElementById('totalBalance').textContent = totalBalance.toLocaleString();
     }
 
-    // حذف معاملة
+    // Delete Tx
     window.deleteTx = function(id) {
       transactions = transactions.filter(t => t.id !== id);
       syncData();
     };
 
+    // UI Helpers
+    window.toggleModal = function(id) {
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    };
+
+    window.switchTab = function(tab) {
+      document.getElementById('tabTxBtn').classList.toggle('active', tab === 'tx');
+      document.getElementById('tabTransferBtn').classList.toggle('active', tab === 'transfer');
+      document.getElementById('txFormCard').style.display = tab === 'tx' ? 'block' : 'none';
+      document.getElementById('transferFormCard').style.display = tab === 'transfer' ? 'block' : 'none';
+    };
+
     function escapeHTML(str) {
-      return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
-    }
-  </script>
-</body>
-</html>
+      return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": 
