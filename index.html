@@ -19,11 +19,25 @@
       --text-muted: #94a3b8;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-    body { background: var(--bg); color: var(--text); padding: 20px 10px; }
-    .container { max-width: 600px; margin: auto; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Cairo', sans-serif; 
+    }
 
-    /* Cards & Glass Style */
+    body { 
+      background: var(--bg); 
+      color: var(--text); 
+      padding: 20px 10px; 
+    }
+
+    .container { 
+      max-width: 600px; 
+      margin: auto; 
+    }
+
+    /* البطاقات التصميمية */
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -32,53 +46,147 @@
       margin-bottom: 15px;
     }
 
-    /* Auth Screen */
-    .auth-box { text-align: center; padding: 40px 20px; }
-    .auth-box h2 { margin-bottom: 10px; }
-    .auth-box p { color: var(--text-muted); margin-bottom: 25px; font-size: 0.9rem; }
+    /* شاشة تسجيل الدخول */
+    .auth-box { 
+      text-align: center; 
+      padding: 40px 20px; 
+    }
+    .auth-box h2 { 
+      margin-bottom: 10px; 
+    }
+    .auth-box p { 
+      color: var(--text-muted); 
+      margin-bottom: 25px; 
+      font-size: 0.9rem; 
+    }
 
-    /* Header */
-    header { display: flex; justify-content: space-between; align-items: center; }
-    .user-info { display: flex; align-items: center; gap: 10px; }
-    .user-avatar { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--primary); }
+    /* الهيدر والمستخدم */
+    header { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+    }
+    .user-info { 
+      display: flex; 
+      align-items: center; 
+      gap: 10px; 
+    }
+    .user-avatar { 
+      width: 38px; 
+      height: 38px; 
+      border-radius: 50%; 
+      border: 1px solid var(--primary); 
+      object-fit: cover;
+    }
 
-    /* Buttons & Inputs */
+    /* الأزرار والحقول */
     .btn {
-      width: 100%; padding: 12px; border-radius: 10px; border: none;
-      font-weight: 700; cursor: pointer; font-size: 0.95rem; margin-top: 5px;
+      width: 100%; 
+      padding: 12px; 
+      border-radius: 10px; 
+      border: none;
+      font-weight: 700; 
+      cursor: pointer; 
+      font-size: 0.95rem; 
+      margin-top: 5px;
     }
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
-    .btn-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); width: auto; padding: 6px 12px; font-size: 0.8rem; }
+    .btn-primary { 
+      background: var(--primary); 
+      color: #fff; 
+    }
+    .btn-secondary { 
+      background: transparent; 
+      color: var(--text); 
+      border: 1px solid var(--border); 
+    }
+    .btn-danger { 
+      background: rgba(239, 68, 68, 0.2); 
+      color: var(--danger); 
+      border: 1px solid var(--danger); 
+      width: auto; 
+      padding: 6px 14px; 
+      font-size: 0.85rem; 
+      border-radius: 8px;
+    }
 
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
+    .form-group { 
+      margin-bottom: 12px; 
+    }
+    .form-group label { 
+      display: block; 
+      font-size: 0.8rem; 
+      color: var(--text-muted); 
+      margin-bottom: 4px; 
+    }
     input, select {
-      width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border);
-      background: #0f172a; color: var(--text); outline: none; font-size: 0.9rem;
+      width: 100%; 
+      padding: 10px 12px; 
+      border-radius: 8px; 
+      border: 1px solid var(--border);
+      background: #0f172a; 
+      color: var(--text); 
+      outline: none; 
+      font-size: 0.9rem;
     }
 
-    /* Summary Dashboard */
-    .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; }
-    .summary-item h5 { color: var(--text-muted); font-size: 0.75rem; margin-bottom: 4px; }
-    .summary-item div { font-weight: 700; font-size: 0.95rem; }
+    /* بطاقات الملخص */
+    .summary-grid { 
+      display: grid; 
+      grid-template-columns: repeat(3, 1fr); 
+      gap: 10px; 
+      text-align: center; 
+    }
+    .summary-item h5 { 
+      color: var(--text-muted); 
+      font-size: 0.75rem; 
+      margin-bottom: 4px; 
+    }
+    .summary-item div { 
+      font-weight: 700; 
+      font-size: 1rem; 
+    }
 
-    /* Transaction List */
-    .tx-list { list-style: none; margin-top: 10px; }
+    /* قائمة السجل */
+    .tx-list { 
+      list-style: none; 
+      margin-top: 5px; 
+    }
     .tx-item {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 0; border-bottom: 1px solid var(--border);
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      padding: 12px 0; 
+      border-bottom: 1px solid var(--border);
     }
-    .tx-item:last-child { border-bottom: none; }
-    .tx-amount.income { color: var(--primary); font-weight: 700; }
-    .tx-amount.expense { color: var(--danger); font-weight: 700; }
+    .tx-item:last-child { 
+      border-bottom: none; 
+    }
+    .tx-amount.income { 
+      color: var(--primary); 
+      font-weight: 700; 
+    }
+    .tx-amount.expense { 
+      color: var(--danger); 
+      font-weight: 700; 
+    }
+    .delete-btn {
+      background: none; 
+      border: none; 
+      color: var(--text-muted); 
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0 5px;
+    }
+    .delete-btn:hover {
+      color: var(--danger);
+    }
   </style>
 </head>
 <body>
 
   <div class="container">
 
-    <!-- 1. شاشة الدخول -->
+    <!-- 1. شاشة تسجيل الدخول -->
     <div id="authScreen" class="card auth-box">
       <h2>محفظتي الذكية</h2>
       <p>تطبيق بسيط ومباشر لإدارة مصاريفك اليومية</p>
@@ -93,7 +201,7 @@
       <header class="card">
         <div class="user-info">
           <img id="userImg" class="user-avatar" src="" style="display: none;">
-          <span id="userName" style="font-weight: 700; font-size: 0.9rem;">زائر</span>
+          <span id="userName" style="font-weight: 700; font-size: 0.95rem;">زائر</span>
         </div>
         <button id="logoutBtn" class="btn btn-danger">خروج</button>
       </header>
@@ -229,7 +337,7 @@
       appScreen.style.display = 'none';
     }
 
-    // جلب بيانات المستخدم من السحابة (Firestore)
+    // جلب البيانات من Firestore
     function listenToUserData() {
       if (!currentUser) return;
       const userRef = doc(db, "users", currentUser.uid);
@@ -244,13 +352,13 @@
       });
     }
 
-    // جلب بيانات الزائر من ذاكرة الهاتف LocalStorage
+    // جلب بيانات الزائر من LocalStorage
     function loadGuestData() {
       transactions = JSON.parse(localStorage.getItem('simple_wallet_tx') || '[]');
       updateUI();
     }
 
-    // حفظ البيانات
+    // حفظ البيانات في السحابة أو الذاكرة المحلية
     async function syncData() {
       if (currentUser) {
         await setDoc(doc(db, "users", currentUser.uid), { transactions }, { merge: true });
@@ -264,10 +372,10 @@
     txForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const type = document.getElementById('txType').value;
-      const amount = parseFloat(document.getElementById('txAmount').value);
+      const amount = Number(document.getElementById('txAmount').value);
       const desc = document.getElementById('txDesc').value.trim();
 
-      if (!amount || amount <= 0) return;
+      if (!amount || amount <= 0 || !desc) return;
 
       transactions.push({
         id: Date.now(),
@@ -281,36 +389,42 @@
       txForm.reset();
     });
 
-    // تحديث الواجهة وحساب المجاميع
+    // تحديث الواجهة وحساب الحسابات العلوية
     function updateUI() {
       let income = 0;
       let expense = 0;
 
       txList.innerHTML = '';
 
-      if (transactions.length === 0) {
+      if (!transactions || transactions.length === 0) {
         txList.innerHTML = `<li style="text-align:center; color:var(--text-muted); padding:15px; font-size:0.85rem;">لا توجد معاملات مسجلة حتى الآن</li>`;
+      } else {
+        transactions.slice().reverse().forEach(t => {
+          const val = Number(t.amount) || 0;
+          
+          if (t.type === 'income') {
+            income += val;
+          } else {
+            expense += val;
+          }
+
+          const li = document.createElement('li');
+          li.className = 'tx-item';
+          li.innerHTML = `
+            <div>
+              <strong style="display:block; font-size:0.88rem;">${escapeHTML(t.desc)}</strong>
+              <span style="font-size:0.75rem; color:var(--text-muted);">${t.date || ''}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span class="tx-amount ${t.type}">${t.type === 'income' ? '+' : '-'}${val.toLocaleString()}</span>
+              <button class="delete-btn" onclick="deleteTx(${t.id})">✕</button>
+            </div>
+          `;
+          txList.appendChild(li);
+        });
       }
 
-      transactions.slice().reverse().forEach(t => {
-        if (t.type === 'income') income += t.amount;
-        else expense += t.amount;
-
-        const li = document.createElement('li');
-        li.className = 'tx-item';
-        li.innerHTML = `
-          <div>
-            <strong style="display:block; font-size:0.88rem;">${escapeHTML(t.desc)}</strong>
-            <span style="font-size:0.75rem; color:var(--text-muted);">${t.date}</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:10px;">
-            <span class="tx-amount ${t.type}">${t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString()}</span>
-            <button onclick="deleteTx(${t.id})" style="background:none; border:none; color:var(--text-muted); cursor:pointer;">✕</button>
-          </div>
-        `;
-        txList.appendChild(li);
-      });
-
+      // تحديث أرقام الكروت
       document.getElementById('totalIncome').textContent = income.toLocaleString();
       document.getElementById('totalExpense').textContent = expense.toLocaleString();
       document.getElementById('totalBalance').textContent = (income - expense).toLocaleString();
