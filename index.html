@@ -1,46 +1,48 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>محفظتي الذكية | Smart Wallet Pro</title>
   
-  <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Smart%20Wallet%22,%22short_name%22:%22Wallet%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22#0b132b%22,%22theme_color%22:%22#10b981%22}">
+  <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22%D9%85%D8%AD%D9%81%D8%B8%D8%AA%D9%8A%20%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9%22,%22short_name%22:%22%D9%85%D8%AD%D9%81%D8%B8%D8%AA%D9%8A%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22#0b132b%22,%22theme_color%22:%22#10b981%22}">
   <meta name="theme-color" content="#10b981">
 
   <!-- Fonts & Libraries -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     :root {
       --bg: #0b132b;
-      --bg-card: rgba(28, 37, 65, 0.75);
+      --bg-card: rgba(28, 37, 65, 0.85);
       --border-line: rgba(255, 255, 255, 0.12);
       --primary: #10b981;
       --danger: #ef4444;
       --accent: #3b82f6;
       --text: #f8fafc;
       --text-muted: #94a3b8;
-      --input-bg: rgba(11, 19, 43, 0.6);
+      --input-bg: rgba(11, 19, 43, 0.7);
+      --modal-bg: #1c2541;
     }
 
     [data-theme="light"] {
       --bg: #f1f5f9;
-      --bg-card: rgba(255, 255, 255, 0.9);
-      --border-line: rgba(0, 0, 0, 0.08);
+      --bg-card: rgba(255, 255, 255, 0.95);
+      --border-line: rgba(0, 0, 0, 0.1);
       --primary: #059669;
       --danger: #dc2626;
       --accent: #2563eb;
       --text: #0f172a;
       --text-muted: #64748b;
       --input-bg: #ffffff;
+      --modal-bg: #ffffff;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', 'Inter', sans-serif; transition: background 0.3s, color 0.3s; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: background 0.3s, color 0.3s; }
     body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 40px; overflow-x: hidden; }
 
     .container { width: min(1150px, 94%); margin: auto; padding-top: 15px; }
@@ -51,9 +53,10 @@
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-line);
       border-radius: 20px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
     }
 
+    /* Landing Screen */
     .hero-section { text-align: center; padding: 50px 20px 30px; max-width: 900px; margin: auto; }
     .hero-badge {
       display: inline-block; padding: 6px 16px; border-radius: 30px; background: rgba(16, 185, 129, 0.15);
@@ -63,7 +66,6 @@
     .hero-subtitle { color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 30px; }
     
     .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin: 35px 0; text-align: right; }
-    [dir="ltr"] .features-grid { text-align: left; }
     .feature-card { padding: 22px; border-radius: 16px; }
     .feature-card i { font-size: 1.8rem; color: var(--primary); margin-bottom: 12px; }
     .feature-card h3 { font-size: 1.05rem; margin-bottom: 8px; font-weight: 700; }
@@ -77,6 +79,7 @@
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-secondary { background: var(--input-bg); color: var(--text); border: 1px solid var(--border-line); }
 
+    /* Header Controls */
     header {
       display: flex; justify-content: space-between; align-items: center;
       padding: 15px 20px; border-radius: 16px; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
@@ -86,16 +89,17 @@
     
     .control-btn, select.control-btn {
       background: var(--input-bg); color: var(--text); border: 1px solid var(--border-line);
-      padding: 8px 12px; border-radius: 10px; font-size: 0.82rem; cursor: pointer; outline: none;
-      display: inline-flex; align-items: center; gap: 5px; font-weight: 600;
+      padding: 8px 14px; border-radius: 10px; font-size: 0.85rem; cursor: pointer; outline: none;
+      display: inline-flex; align-items: center; gap: 6px; font-weight: 700;
     }
 
     .user-avatar { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
 
+    /* Dashboard Widgets */
     .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
     .card { padding: 18px; text-align: center; }
     .card h4 { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 6px; }
-    .card .amount { font-size: 1.4rem; font-weight: 800; word-break: break-word; }
+    .card .amount { font-size: 1.35rem; font-weight: 800; word-break: break-word; }
     .card.income .amount { color: var(--primary); }
     .card.expense .amount { color: var(--danger); }
     .card.savings .amount { color: var(--accent); }
@@ -160,6 +164,22 @@
     }
 
     .chart-container { position: relative; height: 250px; width: 100%; display: flex; justify-content: center; }
+
+    /* Settings Modal System */
+    .modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 999;
+      justify-content: center; align-items: center; padding: 15px;
+    }
+    .modal-card {
+      background: var(--modal-bg); border: 1px solid var(--border-line);
+      width: min(500px, 100%); border-radius: 20px; padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-header h3 { font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+    .close-modal { background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; }
+    .setting-item { margin-bottom: 18px; }
+    .setting-item label { display: block; font-size: 0.85rem; margin-bottom: 6px; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -167,85 +187,85 @@
   <!-- Landing Screen -->
   <div id="landingScreen" class="container">
     <div class="hero-section">
-      <span class="hero-badge"><i class="fa-solid fa-shield-halved"></i> <span id="txtBadge">آمن 100% وخالٍ من الإعلانات</span></span>
-      <h1 class="hero-title" id="txtHeroTitle">إدارة أموالك أصبحت أسهل وأكثر ذكاءً</h1>
-      <p class="hero-subtitle" id="txtHeroSub">تطبيق مالي مجاني تماماً يتيح لك تتبع المصاريف، إدارة الميزانية، وتتبع أهداف الادخار بجميع العملات بدون تعقيد.</p>
+      <span class="hero-badge"><i class="fa-solid fa-shield-halved"></i> آمن 100% وخالٍ من الإعلانات</span>
+      <h1 class="hero-title">إدارة أموالك أصبحت أسهل وأكثر ذكاءً</h1>
+      <p class="hero-subtitle">تطبيق مالي مجاني ومصمم خصيصاً لتتبع المصاريف، الميزانيات، وأهداف الادخار بالعملة اليمنية والعملات العالمية بسهولة.</p>
       
       <div class="auth-actions">
         <button class="btn-main btn-primary" id="loginBtn">
-          <i class="fa-brands fa-google"></i> <span id="txtGoogleLogin">الدخول بحساب Google</span>
+          <i class="fa-brands fa-google"></i> الدخول بحساب Google
         </button>
         <button class="btn-main btn-secondary" id="guestBtn">
-          <i class="fa-solid fa-rocket"></i> <span id="txtGuestLogin">تجربة سريعة بدون حساب</span>
+          <i class="fa-solid fa-rocket"></i> تجربة سريعة بدون حساب
         </button>
       </div>
 
       <div class="features-grid">
         <div class="feature-card glass">
           <i class="fa-solid fa-coins"></i>
-          <h3 id="ft1Title">تعدد العملات</h3>
-          <p id="ft1Desc">دعم كامل للريال اليمني، السعودي، الدولار وغيرها مع حفظ المبالغ بفرز دقيق.</p>
+          <h3>دعم كامل للعملات اليمنية</h3>
+          <p>تخصيص مباشر للريال اليمني (صنعاء وعدن)، الريال السعودي والدولار مع تحويل دقيق.</p>
         </div>
         <div class="feature-card glass">
           <i class="fa-solid fa-wifi"></i>
-          <h3 id="ft2Title">يعمل بدون إنترنت</h3>
-          <p id="ft2Desc">سجل معاملتك في أي وقت وأي مكان وسيتزامن تلقائياً فور توفر الاتصال.</p>
+          <h3>عمل مجاني بدون إنترنت</h3>
+          <p>سجل مصاريفك ودخلك في أي مكان وسيتم المزامنة التلقائية فور توفر الاتصال.</p>
         </div>
         <div class="feature-card glass">
-          <i class="fa-solid fa-ban"></i>
-          <h3 id="ft3Title">بدون إعلانات مزعجة</h3>
-          <p id="ft3Desc">تجربة بسيطة ومريحة للعين تضمن لك السرعة والسلاسة في الاستخدام.</p>
+          <i class="fa-solid fa-sliders"></i>
+          <h3>إعدادات وتخصيص كامل</h3>
+          <p>تحكم بالوضع الليلي، والعملات المفضلة وأسعار الصرف مباشرة من الإعدادات.</p>
         </div>
         <div class="feature-card glass">
           <i class="fa-solid fa-file-csv"></i>
-          <h3 id="ft4Title">تصدير وتقارير</h3>
-          <p id="ft4Desc">احصل على تقاريرك المالية مجمعة في ملفات Excel بضغطة زر واحدة.</p>
+          <h3>تصدير وتقارير Excel</h3>
+          <p>احصل على تقاريرك المجمعة والمفصلة لجميع معاملاتك بضغطة زر واحدة.</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Main App Screen -->
+  <!-- Main Dashboard App Screen -->
   <div id="appScreen" class="container" style="display: none;">
     <header class="glass">
       <div class="brand">
         <i class="fa-solid fa-wallet"></i>
-        <span id="txtAppTitle">محفظتي الذكية</span>
+        <span>محفظتي الذكية</span>
       </div>
       <div class="top-controls">
-        <button class="control-btn" id="langToggleBtn"><i class="fa-solid fa-globe"></i> <span id="langText">EN</span></button>
-        <button class="control-btn" id="themeToggleBtn"><i class="fa-solid fa-moon"></i></button>
-
-        <select id="currencySelect" class="control-btn" title="العملة المعروضة">
-          <option value="USD">عرض بـ USD ($)</option>
-          <option value="YER">عرض بـ YER (ريال يمني)</option>
-          <option value="SAR">عرض بـ SAR (ريال سعودي)</option>
-          <option value="AED">عرض بـ AED (درهم إماراتي)</option>
-          <option value="OMR">عرض بـ OMR (ريال عماني)</option>
+        <select id="currencySelect" class="control-btn" title="اختر عملة العرض الرئيسية">
+          <option value="YER_SANAA">ريال يمني - صنعاء (ر.ي)</option>
+          <option value="YER_ADEN">ريال يمني - عدن (ر.ي)</option>
+          <option value="SAR">ريال سعودي (ر.س)</option>
+          <option value="USD">دولار أمريكي ($)</option>
         </select>
 
+        <button class="control-btn" id="openSettingsBtn" title="الإعدادات">
+          <i class="fa-solid fa-gear"></i> الإعدادات
+        </button>
+
         <div id="userProfile" style="display: flex; align-items: center; gap: 8px;">
-          <img id="userImg" class="user-avatar" src="" alt="User" style="display:none;">
-          <button class="control-btn" id="logoutBtn" style="color:var(--danger);"><i class="fa-solid fa-right-from-bracket"></i></button>
+          <img id="userImg" class="user-avatar" src="" alt="المستخدم" style="display:none;">
+          <button class="control-btn" id="logoutBtn" style="color:var(--danger);" title="تسجيل الخروج"><i class="fa-solid fa-right-from-bracket"></i></button>
         </div>
       </div>
     </header>
 
     <div class="alert" id="budgetAlert">
-      <i class="fa-solid fa-triangle-exclamation"></i> <span id="txtBudgetAlert">تنبيه: لقد تجاوزت أو اقتربت جداً من حد الميزانية الشهرية!</span>
+      <i class="fa-solid fa-triangle-exclamation"></i> تنبيه: لقد اقتربت أو تجاوزت الحد المسموح للميزانية الشهرية!
     </div>
 
     <div class="dashboard-grid">
       <div class="card glass income">
-        <h4 id="txtIncomeLabel">إجمالي الدخل</h4>
+        <h4>إجمالي الدخل</h4>
         <div class="amount" id="incomeVal">0</div>
       </div>
       <div class="card glass expense">
-        <h4 id="txtExpenseLabel">إجمالي المصاريف</h4>
+        <h4>إجمالي المصاريف</h4>
         <div class="amount" id="expenseVal">0</div>
       </div>
       <div class="card glass savings">
-        <h4 id="txtSavingsLabel">المتبقي / المدخرات</h4>
+        <h4>المتبقي / المدخرات</h4>
         <div class="amount" id="savingsVal">0</div>
       </div>
     </div>
@@ -253,7 +273,7 @@
     <div class="goals-grid">
       <div class="budget-section glass">
         <div class="budget-header">
-          <span><span id="txtBudgetLabel">الميزانية الشهرية</span>: <strong id="budgetTarget">0</strong></span>
+          <span>الميزانية الشهرية: <strong id="budgetTarget">0</strong></span>
           <button class="control-btn" id="btnEditBudget" style="padding: 2px 8px;"><i class="fa-solid fa-pen"></i></button>
         </div>
         <div class="progress-bar">
@@ -263,7 +283,7 @@
 
       <div class="savings-goal-box glass">
         <div class="budget-header">
-          <span><span id="txtGoalLabel">هدف الادخار</span>: <strong id="goalTarget">0</strong></span>
+          <span>هدف الادخار: <strong id="goalTarget">0</strong></span>
           <button class="control-btn" id="btnEditGoal" style="padding: 2px 8px;"><i class="fa-solid fa-pen"></i></button>
         </div>
         <div class="progress-bar">
@@ -274,52 +294,54 @@
 
     <div class="main-grid">
       <div class="form-box glass">
-        <h3><i class="fa-solid fa-plus-circle" style="color:var(--primary);"></i> <span id="txtAddTxTitle">إضافة معاملة جديدة</span></h3>
+        <h3><i class="fa-solid fa-plus-circle" style="color:var(--primary);"></i> إضافة معاملة جديدة</h3>
         <form id="txForm">
           <div class="form-row">
             <div class="input-group">
-              <label id="lblTxType">نوع المعاملة</label>
+              <label>نوع المعاملة</label>
               <select id="type">
-                <option value="expense" id="optExpense">مصروف (-)</option>
-                <option value="income" id="optIncome">دخل (+)</option>
+                <option value="expense">مصروف (-)</option>
+                <option value="income">دخل (+)</option>
               </select>
             </div>
             <div class="input-group">
-              <label id="lblCategory">التصنيف</label>
-              <select id="category"></select>
+              <label>التصنيف</label>
+              <select id="category">
+                <option value="طعام">طعام ومشروبات</option>
+                <option value="سكن">سكن وفواتير</option>
+                <option value="مواصلات">مواصلات ونقل</option>
+                <option value="تعليم">تعليم ودورات</option>
+                <option value="ترفيه">ترفيه وتسوق</option>
+                <option value="راتب">راتب / عمل حر</option>
+                <option value="أخرى">أخرى</option>
+              </select>
             </div>
           </div>
 
           <div class="form-row">
             <div class="input-group">
-              <label id="lblAmount">المبلغ</label>
-              <input type="number" id="amount" placeholder="0.00" required step="any" min="0.01">
-            </div>
-                 <div class="form-row">
-            <div class="input-group">
-              <label id="lblAmount">المبلغ</label>
+              <label>المبلغ</label>
               <input type="number" id="amount" placeholder="0.00" required step="any" min="0.01">
             </div>
             <div class="input-group">
-              <label id="lblTxCurrency">عملة المعاملة الحالية</label>
+              <label>عملة المعاملة الحالية</label>
               <select id="txCurrency">
-                <option value="YER">ريال يمني (YER)</option>
-                <option value="USD">دولار (USD)</option>
-                <option value="SAR">ريال سعودي (SAR)</option>
-                <option value="AED">درهم إماراتي (AED)</option>
-                <option value="OMR">ريال عماني (OMR)</option>
+                <option value="YER_SANAA">ريال يمني - صنعاء</option>
+                <option value="YER_ADEN">ريال يمني - عدن</option>
+                <option value="SAR">ريال سعودي</option>
+                <option value="USD">دولار أمريكي</option>
               </select>
             </div>
           </div>
 
           <div class="input-group">
-            <label id="lblDescription">الوصف</label>
-            <input type="text" id="description" placeholder="..." required>
+            <label>الوصف</label>
+            <input type="text" id="description" placeholder="مثال: شراء مستلزمات..." required>
           </div>
 
           <div class="checkbox-group">
             <input type="checkbox" id="isRecurring">
-            <label for="isRecurring" id="lblRecurring">معاملة متكررة شهرياً</label>
+            <label for="isRecurring">معاملة متكررة شهرياً</label>
           </div>
 
           <button type="submit" class="btn" id="btnSaveTx"><i class="fa-solid fa-check"></i> حفظ المعاملة</button>
@@ -327,7 +349,7 @@
       </div>
 
       <div class="chart-box glass">
-        <h3><i class="fa-solid fa-chart-pie" style="color:var(--accent);"></i> <span id="txtChartTitle">توزيع المصاريف</span></h3>
+        <h3><i class="fa-solid fa-chart-pie" style="color:var(--accent);"></i> توزيع المصاريف</h3>
         <div class="chart-container">
           <canvas id="expenseChart"></canvas>
         </div>
@@ -336,15 +358,51 @@
 
     <div class="transactions-box glass">
       <div class="tx-header-actions">
-        <h3><i class="fa-solid fa-list-check" style="color:var(--primary);"></i> <span id="txtHistoryTitle">سجل المعاملات</span></h3>
+        <h3><i class="fa-solid fa-list-check" style="color:var(--primary);"></i> سجل المعاملات</h3>
         
         <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <input type="text" id="searchInput" class="search-input" placeholder="...">
-          <button class="control-btn" id="exportBtn"><i class="fa-solid fa-file-excel"></i> <span id="txtExportBtn">تصدير Excel</span></button>
+          <input type="text" id="searchInput" class="search-input" placeholder="بحث...">
+          <button class="control-btn" id="exportBtn"><i class="fa-solid fa-file-excel"></i> تصدير Excel</button>
         </div>
       </div>
       
       <ul class="tx-list" id="txList"></ul>
+    </div>
+  </div>
+
+  <!-- Modal Settings Window -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-gear" style="color:var(--primary);"></i> إعدادات المحفظة</h3>
+        <button class="close-modal" id="closeSettingsBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="setting-item">
+        <label>المظهر المفضل (الوضع):</label>
+        <button class="control-btn" id="themeToggleBtn" style="width: 100%; justify-content: center; padding: 10px;">
+          <i class="fa-solid fa-moon"></i> التبديل للوضع الليلي / النهار
+        </button>
+      </div>
+
+      <div class="setting-item">
+        <label>أسعار الصرف الدليلية مقابل (1$) دولار:</label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <span style="font-size:0.75rem; color:var(--text-muted);">ريال يمني (صنعاء):</span>
+            <input type="number" id="rateSanaa" value="530">
+          </div>
+          <div>
+            <span style="font-size:0.75rem; color:var(--text-muted);">ريال يمني (عدن):</span>
+            <input type="number" id="rateAden" value="1900">
+          </div>
+          <div>
+            <span style="font-size:0.75rem; color:var(--text-muted);">ريال سعودي:</span>
+            <input type="number" id="rateSAR" value="3.75">
+          </div>
+        </div>
+      </div>
+               <button class="btn" id="saveSettingsBtn" style="margin-top: 10px;">حفظ التغييرات الإعدادات</button>
     </div>
   </div>
 
@@ -359,8 +417,7 @@
       projectId: "smart-wellat",
       storageBucket: "smart-wellat.firebasestorage.app",
       messagingSenderId: "945130034170",
-      appId: "1:945130034170:web:86fd5c48b3cb02ee8aca43",
-      measurementId: "G-CGCWMYZS1Z"
+      appId: "1:945130034170:web:86fd5c48b3cb02ee8aca43"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -372,59 +429,12 @@
     let transactions = [];
     let monthlyBudget = 1000;
     let savingsGoal = 5000;
-    let selectedCurrency = "USD";
-    let currentLang = "ar";
+    let selectedCurrency = "YER_SANAA";
     let currentTheme = "dark";
     let myChart = null;
 
-    const exchangeRates = { USD: 1, SAR: 3.75, AED: 3.67, OMR: 0.38, YER: 530 };
-    const currencySymbols = { USD: '$', SAR: 'ر.س', AED: 'د.إ', OMR: 'ر.ع', YER: 'ر.ي' };
-
-    const categoriesList = {
-      ar: { 'طعام': 'طعام ومشروبات', 'سكن': 'سكن وفواتير', 'مواصلات': 'مواصلات ونقل', 'تعليم': 'تعليم ودورات', 'ترفيه': 'ترفيه وتسوق', 'راتب': 'راتب / عمل حر', 'أخرى': 'أخرى' },
-      en: { 'طعام': 'Food & Dining', 'سكن': 'Housing & Utilities', 'مواصلات': 'Transportation', 'تعليم': 'Education', 'ترفيه': 'Entertainment', 'راتب': 'Salary / Freelance', 'أخرى': 'Other' }
-    };
-
-    const i18n = {
-      ar: {
-        badge: "آمن 100% وخالٍ من الإعلانات",
-        appTitle: "محفظتي الذكية",
-        heroTitle: "إدارة أموالك أصبحت أسهل وأكثر ذكاءً",
-        heroSub: "تطبيق مالي مجاني تماماً يتيح لك تتبع المصاريف، إدارة الميزانية، وتتبع أهداف الادخار بجميع العملات بدون تعقيد.",
-        googleLogin: "الدخول بحساب Google",
-        guestLogin: "تجربة سريعة بدون حساب",
-        ft1Title: "تعدد العملات", ft1Desc: "دعم كامل للريال اليمني، السعودي، الدولار وغيرها مع حفظ المبالغ بفرز دقيق.",
-        ft2Title: "يعمل بدون إنترنت", ft2Desc: "سجل معاملتك في أي وقت وأي مكان وسيتزامن تلقائياً فور توفر الاتصال.",
-        ft3Title: "بدون إعلانات مزعجة", ft3Desc: "تجربة بسيطة ومريحة للعين تضمن لك السرعة والسلاسة في الاستخدام.",
-        ft4Title: "تصدير وتقارير", ft4Desc: "احصل على تقاريرك المالية مجمعة في ملفات Excel بضغطة زر واحدة.",
-        income: "إجمالي الدخل", expense: "إجمالي المصاريف", savings: "المتبقي / المدخرات",
-        budget: "الميزانية الشهرية", goal: "هدف الادخار", addTx: "إضافة معاملة جديدة",
-        type: "نوع المعاملة", category: "التصنيف", amount: "المبلغ", txCurrency: "عملة المعاملة الحالية",
-        description: "الوصف", recurring: "معاملة متكررة شهرياً", save: "حفظ المعاملة",
-        chart: "توزيع المصاريف", history: "سجل المعاملات", budgetAlert: "تنبيه: لقد تجاوزت أو اقتربت جداً من حد الميزانية الشهرية!",
-        optExpense: "مصروف (-)", optIncome: "دخل (+)", searchPlaceholder: "بحث...", exportBtn: "تصدير Excel",
-        noRecords: "لا يوجد سجلات حالياً", editBudgetPrompt: "أدخل الميزانية الشهرية الجديدة:", editGoalPrompt: "أدخل هدف الادخار الجديد:"
-      },
-      en: {
-        badge: "100% Secure & Ad-Free",
-        appTitle: "Smart Wallet",
-        heroTitle: "Smart & Simple Financial Management",
-        heroSub: "Track expenses, control budgets, and hit savings goals easily across all currencies.",
-        googleLogin: "Sign in with Google",
-        guestLogin: "Quick Guest Mode",
-        ft1Title: "Multi-Currency", ft1Desc: "Full support for YER, SAR, USD with accurate local and global conversion.",
-        ft2Title: "Offline First", ft2Desc: "Add transactions anytime. Data syncs seamlessly once online.",
-        ft3Title: "100% Ad-Free", ft3Desc: "Clean, distraction-free UI built for speed and effortless tracking.",
-        ft4Title: "Export Reports", ft4Desc: "Download structured financial reports into Excel CSV with one click.",
-        income: "Total Income", expense: "Total Expense", savings: "Net Balance",
-        budget: "Monthly Budget", goal: "Savings Goal", addTx: "Add New Transaction",
-        type: "Type", category: "Category", amount: "Amount", txCurrency: "Transaction Currency",
-        description: "Description", recurring: "Monthly Recurring", save: "Save Transaction",
-        chart: "Expenses Breakdown", history: "Transaction History", budgetAlert: "Warning: Approaching or exceeding monthly budget!",
-        optExpense: "Expense (-)", optIncome: "Income (+)", searchPlaceholder: "Search...", exportBtn: "Export CSV",
-        noRecords: "No transactions found", editBudgetPrompt: "Enter new monthly budget:", editGoalPrompt: "Enter new savings goal:"
-      }
-    };
+    let exchangeRates = { USD: 1, SAR: 3.75, YER_SANAA: 530, YER_ADEN: 1900 };
+    const currencySymbols = { USD: '$', SAR: 'ر.س', YER_SANAA: 'ر.ي (ص)', YER_ADEN: 'ر.ي (ع)' };
 
     function escapeHTML(str) {
       return String(str).replace(/[&<>"']/g, function (m) {
@@ -432,22 +442,43 @@
       });
     }
 
-    // Attach Event Listeners safely
+    // Modal Control
+    document.getElementById('openSettingsBtn').addEventListener('click', () => {
+      document.getElementById('rateSanaa').value = exchangeRates.YER_SANAA;
+      document.getElementById('rateAden').value = exchangeRates.YER_ADEN;
+      document.getElementById('rateSAR').value = exchangeRates.SAR;
+      document.getElementById('settingsModal').style.display = 'flex';
+    });
+    document.getElementById('closeSettingsBtn').addEventListener('click', () => {
+      document.getElementById('settingsModal').style.display = 'none';
+    });
+
+    document.getElementById('saveSettingsBtn').addEventListener('click', () => {
+      exchangeRates.YER_SANAA = parseFloat(document.getElementById('rateSanaa').value) || 530;
+      exchangeRates.YER_ADEN = parseFloat(document.getElementById('rateAden').value) || 1900;
+      exchangeRates.SAR = parseFloat(document.getElementById('rateSAR').value) || 3.75;
+      document.getElementById('settingsModal').style.display = 'none';
+      syncData();
+    });
+
+    // Theme Toggle Control
+    document.getElementById('themeToggleBtn').addEventListener('click', () => {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+    });
+
+    // Event Binding
     document.getElementById('loginBtn').addEventListener('click', () => {
       const provider = new GoogleAuthProvider();
-      signInWithPopup(auth, provider).catch(err => alert("Error logging in: " + err.message));
+      signInWithPopup(auth, provider).catch(err => alert("خطأ في تسجيل الدخول: " + err.message));
     });
 
     document.getElementById('guestBtn').addEventListener('click', () => {
-      isGuest = true;
-      currentUser = null;
-      loadGuestData();
-      showDashboard();
+      isGuest = true; currentUser = null; loadGuestData(); showDashboard();
     });
 
     document.getElementById('logoutBtn').addEventListener('click', () => {
-      if (isGuest) { isGuest = false; showLanding(); } 
-      else { signOut(auth); }
+      if (isGuest) { isGuest = false; showLanding(); } else { signOut(auth); }
     });
 
     document.getElementById('btnEditBudget').addEventListener('click', setBudget);
@@ -457,9 +488,7 @@
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        currentUser = user;
-        isGuest = false;
-        showDashboard();
+        currentUser = user; isGuest = false; showDashboard();
         document.getElementById('userImg').src = user.photoURL || '';
         document.getElementById('userImg').style.display = 'inline-block';
         listenToUserData();
@@ -472,7 +501,7 @@
       document.getElementById('landingScreen').style.display = 'none';
       document.getElementById('appScreen').style.display = 'block';
       initChart();
-      applyLanguage();
+      updateApp();
     }
 
     function showLanding() {
@@ -489,13 +518,14 @@
           transactions = data.transactions || [];
           monthlyBudget = data.monthlyBudget || 1000;
           savingsGoal = data.savingsGoal || 5000;
-          selectedCurrency = data.selectedCurrency || "USD";
+          selectedCurrency = data.selectedCurrency || "YER_SANAA";
+          if (data.exchangeRates) exchangeRates = data.exchangeRates;
           document.getElementById('currencySelect').value = selectedCurrency;
         } else {
           syncData();
         }
         updateApp();
-      }, (err) => console.error("Firestore sync error:", err));
+      });
     }
 
     function loadGuestData() {
@@ -503,11 +533,11 @@
         transactions = JSON.parse(localStorage.getItem('wallet_tx') || '[]');
         monthlyBudget = parseFloat(localStorage.getItem('wallet_budget') || '1000');
         savingsGoal = parseFloat(localStorage.getItem('wallet_goal') || '5000');
-        selectedCurrency = localStorage.getItem('wallet_currency') || 'USD';
+        selectedCurrency = localStorage.getItem('wallet_currency') || 'YER_SANAA';
+        const savedRates = localStorage.getItem('wallet_rates');
+        if (savedRates) exchangeRates = JSON.parse(savedRates);
         document.getElementById('currencySelect').value = selectedCurrency;
-      } catch (e) {
-        console.error("Local storage parse error", e);
-      }
+      } catch (e) { console.error("Error reading local data", e); }
       updateApp();
     }
 
@@ -515,15 +545,14 @@
       if (currentUser) {
         try {
           const userDocRef = doc(db, "users", currentUser.uid);
-          await setDoc(userDocRef, { transactions, monthlyBudget, savingsGoal, selectedCurrency }, { merge: true });
-        } catch(e) {
-          console.error("Cloud Save failed", e);
-        }
+          await setDoc(userDocRef, { transactions, monthlyBudget, savingsGoal, selectedCurrency, exchangeRates }, { merge: true });
+        } catch(e) { console.error("Cloud Error", e); }
       } else if (isGuest) {
         localStorage.setItem('wallet_tx', JSON.stringify(transactions));
         localStorage.setItem('wallet_budget', monthlyBudget.toString());
         localStorage.setItem('wallet_goal', savingsGoal.toString());
         localStorage.setItem('wallet_currency', selectedCurrency);
+        localStorage.setItem('wallet_rates', JSON.stringify(exchangeRates));
       }
       updateApp();
     }
@@ -532,66 +561,6 @@
       selectedCurrency = e.target.value;
       syncData();
     });
-
-    document.getElementById('themeToggleBtn').addEventListener('click', () => {
-      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', currentTheme);
-      document.getElementById('themeToggleBtn').innerHTML = currentTheme === 'dark' ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
-    });
-
-    document.getElementById('langToggleBtn').addEventListener('click', () => {
-      currentLang = currentLang === 'ar' ? 'en' : 'ar';
-      document.documentElement.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
-      document.getElementById('langText').textContent = currentLang === 'ar' ? 'EN' : 'عربي';
-      applyLanguage();
-    });
-function applyLanguage() {
-      const t = i18n[currentLang];
-      document.getElementById('txtBadge').textContent = t.badge;
-      document.getElementById('txtAppTitle').textContent = t.appTitle;
-      document.getElementById('txtHeroTitle').textContent = t.heroTitle;
-      document.getElementById('txtHeroSub').textContent = t.heroSub;
-      document.getElementById('txtGoogleLogin').textContent = t.googleLogin;
-      document.getElementById('txtGuestLogin').textContent = t.guestLogin;
-      document.getElementById('ft1Title').textContent = t.ft1Title; document.getElementById('ft1Desc').textContent = t.ft1Desc;
-      document.getElementById('ft2Title').textContent = t.ft2Title; document.getElementById('ft2Desc').textContent = t.ft2Desc;
-      document.getElementById('ft3Title').textContent = t.ft3Title; document.getElementById('ft3Desc').textContent = t.ft3Desc;
-      document.getElementById('ft4Title').textContent = t.ft4Title; document.getElementById('ft4Desc').textContent = t.ft4Desc;
-      document.getElementById('txtIncomeLabel').textContent = t.income;
-      document.getElementById('txtExpenseLabel').textContent = t.expense;
-      document.getElementById('txtSavingsLabel').textContent = t.savings;
-      document.getElementById('txtBudgetLabel').textContent = t.budget;
-      document.getElementById('txtGoalLabel').textContent = t.goal;
-      document.getElementById('txtAddTxTitle').textContent = t.addTx;
-      document.getElementById('lblTxType').textContent = t.type;
-      document.getElementById('lblCategory').textContent = t.category;
-      document.getElementById('lblAmount').textContent = t.amount;
-      document.getElementById('lblTxCurrency').textContent = t.txCurrency;
-      document.getElementById('lblDescription').textContent = t.description;
-      document.getElementById('lblRecurring').textContent = t.recurring;
-      document.getElementById('btnSaveTx').innerHTML = `<i class="fa-solid fa-check"></i> ${t.save}`;
-      document.getElementById('txtChartTitle').textContent = t.chart;
-      document.getElementById('txtHistoryTitle').textContent = t.history;
-      document.getElementById('txtBudgetAlert').textContent = t.budgetAlert;
-      document.getElementById('optExpense').textContent = t.optExpense;
-      document.getElementById('optIncome').textContent = t.optIncome;
-      document.getElementById('searchInput').placeholder = t.searchPlaceholder;
-      document.getElementById('txtExportBtn').textContent = t.exportBtn;
-
-      // Fill Categories Dynamically
-      const catSelect = document.getElementById('category');
-      const curCatVal = catSelect.value;
-      catSelect.innerHTML = '';
-      Object.entries(categoriesList[currentLang]).forEach(([key, val]) => {
-        const opt = document.createElement('option');
-        opt.value = key;
-        opt.textContent = val;
-        catSelect.appendChild(opt);
-      });
-      if (curCatVal) catSelect.value = curCatVal;
-
-      updateApp();
-    }
 
     function convertToUSD(amount, curr) { return amount / (exchangeRates[curr] || 1); }
     function convertFromUSD(amountUSD, targetCurr) { return amountUSD * (exchangeRates[targetCurr] || 1); }
@@ -606,7 +575,7 @@ function applyLanguage() {
       const isRecurring = document.getElementById('isRecurring').checked;
 
       if (!amount || amount <= 0 || isNaN(amount)) {
-        alert(currentLang === 'ar' ? 'الرجاء إدخال مبلغ صحيح' : 'Please enter a valid amount');
+        alert('الرجاء إدخال مبلغ صحيح');
         return;
       }
 
@@ -619,7 +588,7 @@ function applyLanguage() {
         originalCurrency: txCurr,
         amountUSD,
         description: isRecurring ? `[🔄] ${rawDesc}` : rawDesc,
-        date: new Date().toLocaleDateString('ar-EG')
+        date: new Date().toLocaleDateString('ar-YE')
       });
 
       syncData();
@@ -656,6 +625,7 @@ function applyLanguage() {
       renderList();
       updateChart();
     }
+
     function renderList() {
       const listEl = document.getElementById('txList');
       const search = document.getElementById('searchInput').value.toLowerCase();
@@ -667,7 +637,7 @@ function applyLanguage() {
       );
 
       if (filtered.length === 0) {
-        listEl.innerHTML = `<li style="text-align:center; color:var(--text-muted); padding:20px;">${i18n[currentLang].noRecords}</li>`;
+        listEl.innerHTML = `<li style="text-align:center; color:var(--text-muted); padding:20px;">لا يوجد سجلات حالياً</li>`;
         return;
       }
 
@@ -678,14 +648,13 @@ function applyLanguage() {
 
         const displayAmt = t.originalAmount ? t.originalAmount : convertFromUSD(t.amountUSD, selectedCurrency);
         const displayCurrSymbol = currencySymbols[t.originalCurrency || selectedCurrency];
-        const categoryLabel = categoriesList[currentLang][t.category] || t.category;
 
         item.innerHTML = `
           <div class="tx-info">
             <div class="tx-icon"><i class="fa-solid ${getCategoryIcon(t.category)}"></i></div>
             <div class="tx-details">
               <strong>${escapeHTML(t.description)}</strong>
-              <div style="font-size:0.72rem; color:var(--text-muted);">${escapeHTML(categoryLabel)} • ${escapeHTML(t.date)}</div>
+              <div style="font-size:0.72rem; color:var(--text-muted);">${escapeHTML(t.category)} • ${escapeHTML(t.date)}</div>
             </div>
           </div>
           <div style="display:flex; align-items:center; gap:8px;">
@@ -698,7 +667,6 @@ function applyLanguage() {
         listEl.appendChild(item);
       });
 
-      // Bind delete events securely
       listEl.querySelectorAll('.delete-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           const id = Number(e.currentTarget.getAttribute('data-id'));
@@ -713,7 +681,7 @@ function applyLanguage() {
     }
 
     function exportToCSV() {
-      if (transactions.length === 0) return alert(currentLang === 'ar' ? "لا يوجد بيانات للتصدير!" : "No data to export!");
+      if (transactions.length === 0) return alert("لا يوجد بيانات للتصدير!");
       let csv = "ID,Type,Category,Description,Original Amount,Original Currency,Amount USD,Date\n";
       transactions.forEach(t => {
         const cleanDesc = t.description ? t.description.replace(/"/g, '""') : '';
@@ -737,10 +705,9 @@ function applyLanguage() {
         default: return 'fa-tag';
       }
     }
-
-    function initChart() {
-      if (myChart) return;
+  function initChart() {
       const ctx = document.getElementById('expenseChart').getContext('2d');
+      if (myChart) myChart.destroy();
       myChart = new Chart(ctx, {
         type: 'doughnut',
         data: { labels: [], datasets: [{ data: [], backgroundColor: ['#ef4444', '#3b82f6', '#f59e0b', '#10b981', '#8b5cf6', '#ec4899', '#64748b'] }] },
@@ -753,8 +720,7 @@ function applyLanguage() {
       const categories = {};
       transactions.filter(t => t.type === 'expense').forEach(t => {
         const val = convertFromUSD(t.amountUSD, selectedCurrency);
-        const translatedCat = categoriesList[currentLang][t.category] || t.category;
-        categories[translatedCat] = (categories[translatedCat] || 0) + val;
+        categories[t.category] = (categories[t.category] || 0) + val;
       });
       myChart.data.labels = Object.keys(categories);
       myChart.data.datasets[0].data = Object.values(categories);
@@ -763,7 +729,7 @@ function applyLanguage() {
 
     function setBudget() {
       const currentVal = convertFromUSD(monthlyBudget, selectedCurrency);
-      const val = prompt(i18n[currentLang].editBudgetPrompt, currentVal.toFixed(0));
+      const val = prompt("أدخل الميزانية الشهرية الجديدة:", currentVal.toFixed(0));
       if (val !== null && !isNaN(parseFloat(val)) && parseFloat(val) >= 0) {
         monthlyBudget = convertToUSD(parseFloat(val), selectedCurrency);
         syncData();
@@ -772,7 +738,7 @@ function applyLanguage() {
 
     function setSavingsGoal() {
       const currentVal = convertFromUSD(savingsGoal, selectedCurrency);
-      const val = prompt(i18n[currentLang].editGoalPrompt, currentVal.toFixed(0));
+      const val = prompt("أدخل هدف الادخار الجديد:", currentVal.toFixed(0));
       if (val !== null && !isNaN(parseFloat(val)) && parseFloat(val) >= 0) {
         savingsGoal = convertToUSD(parseFloat(val), selectedCurrency);
         syncData();
